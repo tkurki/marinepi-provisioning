@@ -1,2 +1,0 @@
----
-signalk_path: /home/{{ ansible_ssh_user }}/signalk
