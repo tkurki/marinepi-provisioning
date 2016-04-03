@@ -3,4 +3,5 @@ node_app_path: /opt/{{ node_app_name }}
 node_app_user: "{{ ansible_ssh_user }}"
 node_app_group: "{{ ansible_ssh_user }}"
 node_app_port: 80
-node_app_env: []
+node_app_env:
+  - "NODE_ENV=production"
