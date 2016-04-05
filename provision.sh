@@ -16,4 +16,4 @@ if [ ! -f "$PLAYBOOK" ]; then
 fi
 
 export ANSIBLE_ROLES_PATH=$(dirname $0)/roles
-ansible-playbook -i $HOST, $PLAYBOOK -e ansible_ssh_host=$HOST
+ansible-playbook -i $HOST, $PLAYBOOK

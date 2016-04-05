@@ -23,4 +23,4 @@ if grep -q $HOST ~/.ssh/known_hosts; then
   ssh-keygen -R $HOST
 fi
 
-ansible-playbook -k -i $HOST, setup.yml -e "ssh_public_key=$PUBLIC_KEY" -e ansible_ssh_user=pi -e ansible_ssh_host=$HOST
+ansible-playbook -k -i $HOST, setup.yml -e "ssh_public_key=$PUBLIC_KEY" -e ansible_ssh_user=pi
