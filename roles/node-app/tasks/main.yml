@@ -23,36 +23,36 @@
 #
 
 ---
-- name: Make app dir
+- name: "{{ node_app_name }} | Make app dir"
   file: path={{ node_app_path }} state=directory mode=0755 owner={{ node_app_user }} group={{ node_app_group }}
 
-- name: Pull sources from the repository
+- name: "{{ node_app_name }} | Pull sources from the repository"
   git: repo={{ node_app_git_repo }} dest={{ node_app_path }} force=yes version=master
   sudo_user: "{{ node_app_user }}"
   register: git_pull
 
-- name: Install npm packages
+- name: "{{ node_app_name }} | Install npm packages"
   shell: chdir={{ node_app_path }} npm install
   sudo_user: "{{ node_app_user }}"
   when: git_pull.changed
 
-- name: Install systemd unit file
+- name: "{{ node_app_name }} | Install systemd unit file"
   template: src=node_app_systemd_script.j2 dest=/etc/systemd/system/{{ node_app_name }}.service owner=root group=root mode=0644
   register: unit_file
 
-- name: Install systemd socket file
+- name: "{{ node_app_name }} | Install systemd socket file"
   template: src=node_app_systemd_socket.j2 dest=/etc/systemd/system/{{ node_app_name }}.socket owner=root group=root mode=0644
   register: socket_file
 
-- name: Reload systemd
+- name: "{{ node_app_name }} | Reload systemd"
   command: systemctl daemon-reload
   when: unit_file.changed or socket_file.changed
 
-- name: Restart & enable socket
+- name: "{{ node_app_name }} | Restart & enable socket"
   command: systemctl enable {{ node_app_name }}.socket
   command: systemctl start {{ node_app_name }}.socket
   when: socket_file.changed
 
-- name: Restart application
+- name: "{{ node_app_name }} | Restart application"
   service: name={{ node_app_name }} state=restarted enabled=yes
   when: git_pull.changed or socket_file.changed or unit_file.changed
