@@ -9,6 +9,13 @@
 #    node_app_git_repo: "<url-to-application-git-repo>"
 #    node_app_main: "main.js"
 #
+# However, if a wrapper script is needed to start the app, the following can be used:
+#
+#  - role: node-app
+#    node_app_name: "my-application"
+#    node_app_git_repo: "<url-to-application-git-repo>"
+#    node_app_execstart: "<absolute/path/to/wrapper>"
+#
 # This role uses systemd to bind by default to port 80. You need to adjust
 # the application to listen to the systemd managed port:
 #  var SD_LISTEN_FDS_START = 3;
