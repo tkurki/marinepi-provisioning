@@ -18,6 +18,9 @@
   sudo: no
   register: canboat_sources
 
+- name: Install xsltproc needed for canboat compiling
+  apt: pkg=xsltproc state=latest
+
 - command: make
   args:
     chdir: "{{ canboat_path }}"
