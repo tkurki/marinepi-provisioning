@@ -1,6 +1,6 @@
 ---
 # For ARMv6 models (A, A+, B, B+). This should match a directory name on the download site: https://nodejs.org/dist/ (e.g. latest-v4.x, v5.8.0, latest)
-nodejs_armv6_version: latest-argon   # Latest 4.x series LTS release
+nodejs_armv6_version: latest-boron   # Latest 6.x series LTS release
 
 # For ARMv7 models (>= 2). This should match NodeSource's versioning (e.g. 4.x, 5.x or 4.4.0)
-nodejs_armv7_version: 4.x
+nodejs_armv7_version: 7.x
