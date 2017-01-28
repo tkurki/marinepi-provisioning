@@ -1,5 +1,5 @@
 [Service]
-ExecStart=/usr/bin/node {{ node_app_path }}/{{ node_app_main }}
+ExecStart={{ node_app_execstart }}
 Restart=always
 StandardOutput=syslog
 StandardError=syslog
