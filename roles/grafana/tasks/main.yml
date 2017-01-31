@@ -28,6 +28,27 @@
   apt: pkg=grafana state=latest
   become: true
 
+- name: HTTP API listen only on localhost
+  lineinfile:
+    dest: '/etc/grafana/grafana.ini'
+    line: 'http_port = 3001'
+    regexp: ';http_port = 3000'
+  become: true
+
+- name: Change admin password
+  lineinfile:
+    dest: '/etc/grafana/grafana.ini'
+    line: 'admin_password = {{ grafana_admin_password}}'
+    regexp: ';admin_password = admin'
+  become: true
+
+- name: Randomize secret for signing stuff(?)
+  lineinfile:
+    dest: '/etc/grafana/grafana.ini'
+    line: 'secret_key = {{ grafana_secret}}'
+    regexp: ';secret_key = SW2YcwTIb9zpOOhoPsMm'
+  become: true
+
 - name: Reload systemd
   command: systemctl daemon-reload
   become: true
