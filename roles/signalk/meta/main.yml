@@ -19,6 +19,7 @@ dependencies:
     node_app_main: "bin/signalk-server"
     node_app_env:
       - "NODE_ENV=production"
+      - "EXTERNALPORT=80"
       - "SIGNALK_NODE_SETTINGS=/etc/signalk-settings.json"
 
   - role: canboat
