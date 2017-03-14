@@ -29,25 +29,46 @@
   become: true
 
 - name: HTTP API listen only on localhost
-  lineinfile:
+  ini_file:
     dest: '/etc/grafana/grafana.ini'
-    line: 'http_port = 3001'
-    regexp: ';http_port = 3000'
+    section: 'server'
+    option: 'http_port'
+    value: 3001
   become: true
 
 - name: Change admin password
-  lineinfile:
+  ini_file:
     dest: '/etc/grafana/grafana.ini'
-    line: 'admin_password = {{ grafana_admin_password}}'
-    regexp: ';admin_password = admin'
+    section: 'security'
+    option: 'admin_password'
+    value: '{{ grafana_admin_password }}'
   become: true
 
-- name: Randomize secret for signing stuff(?)
-  lineinfile:
-    dest: '/etc/grafana/grafana.ini'
-    line: 'secret_key = {{ grafana_secret}}'
-    regexp: ';secret_key = SW2YcwTIb9zpOOhoPsMm'
+- name: Check for secret_key touch file
+  stat:
+    path: /etc/grafana/secret_key_set
+  register: secret_key_set
+
+- name: Generate random secret_key
+  command: openssl rand -base64 18
+  register: random_secret
+  when: secret_key_set.stat.exists == False
+
+- name: Set new secret_key
+  ini_file:
+    dest: /etc/grafana/grafana.ini
+    section: security
+    option: secret_key
+    value: '{{ random_secret.stdout }}'
   become: true
+  when: secret_key_set.stat.exists == False
+
+- name: Set secret_key touch file
+  file:
+    path: /etc/grafana/secret_key_set
+    state: touch
+  become: true
+  when: secret_key_set.stat.exists == False
 
 - name: Reload systemd
   command: systemctl daemon-reload
