@@ -22,7 +22,13 @@
 # You can define 1...n wificlients by adding/removing lines
 
   vars:
+
     - hostname: marinepi
+
+    # timezone defaults to Etc/UTC
+    #  (for valid values, see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+    - timezone: Europe/Helsinki
+
     - wificlient_networks:
        - ssid: <your marina ssid 1 here>
          psk: <your marina 1 wifi passphrase here>
