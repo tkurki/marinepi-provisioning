@@ -12,4 +12,5 @@ cat > /tmp/play.yml <<PLAYBOOK
   - $role
 PLAYBOOK
 
+export ANSIBLE_ROLES_PATH=$(dirname $0)/roles
 ansible-playbook /tmp/play.yml -i $1, -u pi
