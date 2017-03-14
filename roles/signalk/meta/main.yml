@@ -17,4 +17,8 @@ dependencies:
     node_app_name: "signalk-server"
     node_app_git_repo: "https://github.com/SignalK/signalk-server-node.git"
     node_app_main: "bin/signalk-server"
+    node_app_env:
+      - "NODE_ENV=production"
+      - "SIGNALK_NODE_SETTINGS=/etc/signalk-settings.json"
+
   - role: canboat

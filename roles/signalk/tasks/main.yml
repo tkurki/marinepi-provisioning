@@ -20,8 +20,20 @@
     args:
       chdir: /opt/signalk-server
 
-  - name: Copy SignalK server settings
-    copy: src={{ signalk_settings_file }} dest=/etc/signalk-settings.json mode=0644
+  - name: Copy Default SignalK server settings
+    copy:
+      src: /opt/signalk-server/settings/settings.json
+      dest: /etc/signalk-settings.json
+      mode: 0644
+      remote_src: true
+    when: signalk_settings_file is not defined
+    register: signalk_settings
+
+  - name: Copy Custom SignalK server settings
+    copy:
+      src: '{{ signalk_settings_file }}'
+      dest: /etc/signalk-settings.json
+      mode: 0644
     when: signalk_settings_file is defined
     register: signalk_settings
 

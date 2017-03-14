@@ -23,6 +23,15 @@
 
   vars:
     - hostname: marinepi
+
+    # signalk_setings_file - config file for server (optional)
+    #
+    #  defaults to the testing config file. Uncomment to override. for
+    #  examples see:
+    #    https://github.com/SignalK/signalk-server-node/tree/master/settings
+    #
+    #- signalk_setings_file: ./settings.json
+
     - wificlient_networks:
        - ssid: <your marina ssid 1 here>
          psk: <your marina 1 wifi passphrase here>
