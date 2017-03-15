@@ -1,0 +1,3 @@
+---
+grafana_secret_key_persist_file: /etc/grafana/.secret_key_persist
+grafana_admin_password: admin

@@ -44,12 +44,49 @@
     value: '{{ grafana_admin_password }}'
   become: true
 
-- name: Randomize secret for signing stuff(?)
+- name: Check for secret_key persist file
+  stat:
+    path: '{{ grafana_secret_key_persist_file }}'
+  register: stat_secret_key_persist
+
+- name: Generate random secret_key, if no persisted value and grafana_secret is not provided
+  command: openssl rand -base64 18
+  when:
+    - stat_secret_key_persist.stat.exists == False
+    - grafana_secret is undefined
+  register: random_secret
+
+- name: Persist random secret_key, if we just generated one
+  copy:
+    content: '{{ random_secret.stdout }}'
+    dest: '{{ grafana_secret_key_persist_file }}'
+    mode: 0600
+  become: true
+  when:
+    - stat_secret_key_persist.stat.exists == False
+    - grafana_secret is undefined
+
+- name: Persist defined secret_key, if one is defined
+  copy:
+    content: '{{ grafana_secret }}'
+    dest: '{{ grafana_secret_key_persist_file }}'
+    mode: 0600
+  become: true
+  when:
+    - grafana_secret is defined
+
+- name: Read persisted secret_key for use in config file
+  slurp:
+    src: '{{ grafana_secret_key_persist_file }}'
+  become: true
+  register: secret_key
+
+- name: Set persisted secret_key in grafana.ini
   ini_file:
     dest: /etc/grafana/grafana.ini
     section: security
     option: secret_key
-    value: '{{ grafana_secret }}'
+    value: "{{ secret_key['content'] | b64decode }}"
   become: true
 
 - name: Reload systemd
