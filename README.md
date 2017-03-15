@@ -74,6 +74,10 @@ wificlient_networks:
 ```
 You can add multiple networks by repeating the last four lines, if needed.
 
+pysk
+----
+Installs the pysk console client on the Pi. See: https://github.com/ph1l/pysk
+
 Credits
 =======
 

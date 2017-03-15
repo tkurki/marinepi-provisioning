@@ -53,6 +53,7 @@
 
     - canboat
     - signalk
+    - pysk
 
   handlers:
     - include: handlers/handlers.yml
