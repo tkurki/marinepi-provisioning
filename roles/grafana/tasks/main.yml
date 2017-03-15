@@ -29,24 +29,27 @@
   become: true
 
 - name: HTTP API listen only on localhost
-  lineinfile:
+  ini_file:
     dest: '/etc/grafana/grafana.ini'
-    line: 'http_port = 3001'
-    regexp: ';http_port = 3000'
+    section: 'server'
+    option: 'http_port'
+    value: 3001
   become: true
 
 - name: Change admin password
-  lineinfile:
+  ini_file:
     dest: '/etc/grafana/grafana.ini'
-    line: 'admin_password = {{ grafana_admin_password}}'
-    regexp: ';admin_password = admin'
+    section: 'security'
+    option: 'admin_password'
+    value: '{{ grafana_admin_password }}'
   become: true
 
 - name: Randomize secret for signing stuff(?)
-  lineinfile:
-    dest: '/etc/grafana/grafana.ini'
-    line: 'secret_key = {{ grafana_secret}}'
-    regexp: ';secret_key = SW2YcwTIb9zpOOhoPsMm'
+  ini_file:
+    dest: /etc/grafana/grafana.ini
+    section: security
+    option: secret_key
+    value: '{{ grafana_secret }}'
   become: true
 
 - name: Reload systemd
