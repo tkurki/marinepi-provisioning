@@ -1,3 +1,13 @@
 ---
+#
+# grafana_secret_key_persist_file - stores the secret key, either set
+#   by the user via the variable `grafana_secret` or randomly generated
+#   by ansible on first provisioning for persistency.
+#
 grafana_secret_key_persist_file: /etc/grafana/.secret_key_persist
+
+#
+# grafana_admin_password - ideally this is overridden via the user's
+#   main `boat.yml` file.
+#
 grafana_admin_password: admin
