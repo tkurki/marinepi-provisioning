@@ -6,3 +6,4 @@ node_app_use_socket: true
 node_app_port: 80
 node_app_env:
   - "NODE_ENV=production"
+node_app_npm_unsafe_perm: false

@@ -35,7 +35,7 @@
   register: git_pull
 
 - name: "{{ node_app_name }} | Install npm packages"
-  shell: chdir={{ node_app_path }} npm install
+  shell: chdir={{ node_app_path }} npm install{{ ' --unsafe-perm' if node_app_npm_unsafe_perm else '' }}
   become_user: "{{ node_app_user }}"
   when: git_pull.changed
 
