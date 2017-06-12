@@ -1,13 +1,9 @@
 ---
-- name: Enable SPI overlay
-  lineinfile: dest=/boot/config.txt line='dtoverlay=spi-bcm2835-overlay'
-  notify: reboot
-
 - name: Setup MCP2515 can device
   lineinfile:
     dest=/boot/config.txt
-    regexp='^dtoverlay=mcp2515-{{ mcp2515_can_device }}-overlay'
-    line="dtoverlay=mcp2515-{{ mcp2515_can_device }}-overlay,oscillator={{ mcp2515_oscillator_freq }},interrupt={{ mcp2515_int_pin }}"
+    regexp='^dtoverlay=mcp2515-{{ mcp2515_can_device }}'
+    line="dtoverlay=mcp2515-{{ mcp2515_can_device }},oscillator={{ mcp2515_oscillator_freq }},interrupt={{ mcp2515_int_pin }}"
   notify: reboot
 
 - name: Bring up CAN device on boot
