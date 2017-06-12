@@ -37,6 +37,14 @@
     when: signalk_settings_file is defined
     register: signalk_settings
 
+  - name: Install SignalK server plugins
+    npm:
+      name: "{{ item }}"
+      path: /opt/signalk-server
+      production: yes
+    with_items: "{{ signalk_plugins }}"
+    when: signalk_plugins is defined
+
   - name: Restart SignalK server
     service: name=signalk-server state=restarted
     when: signalk_settings.changed
