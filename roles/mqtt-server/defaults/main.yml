@@ -3,8 +3,10 @@ mqtt_server_port: 1883
 mqtt_server_websocket_port: 8883
 mqtt_server_users: []
 mqtt_server_password_file: /etc/mosquitto/mosquitto_passwords.txt
+mqtt_server_acl_file: /etc/mosquitto/mosquitto_acl.txt
 mqtt_server_config: |
   listener {{ mqtt_server_port }}
 
   listener {{ mqtt_server_websocket_port }}
   protocol websockets
+mqtt_server_acl_config: ""

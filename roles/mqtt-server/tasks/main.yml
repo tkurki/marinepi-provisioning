@@ -65,6 +65,13 @@
   with_items: "{{ mqtt_server_users }}"
   when: mqtt_server_users|length > 0
 
+- name: Setup mosquitto ACL file
+  copy:
+    dest: "{{ mqtt_server_acl_file }}"
+    content: "{{ mqtt_server_acl_config }}"
+  when: mqtt_server_acl_config != ""
+  register: mosquitto_acl_file
+
 - name: Enable mosquitto and start it
   systemd: name=mosquitto daemon_reload=yes state=restarted enabled=yes
-  when: (mosquitto_unit_file is defined and mosquitto_unit_file.changed) or (mosquitto_conf_file is defined and mosquitto_conf_file.changed)
+  when: (mosquitto_unit_file is defined and mosquitto_unit_file.changed) or (mosquitto_conf_file is defined and mosquitto_conf_file.changed) or (mosquitto_acl_file is defined and mosquitto_acl_file.changed)
