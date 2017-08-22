@@ -77,6 +77,15 @@ pysk
 ----
 Installs the pysk console client on the Pi. See: https://github.com/ph1l/pysk
 
+grafana
+-------
+Installs grafana. Override variables:
+```
+grafana_admin_password: admin
+grafana_secret: SW2YcwTIb9zpOOhoPsMm
+grafana_port: 3000
+```
+
 Credits
 =======
 
