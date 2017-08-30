@@ -28,5 +28,5 @@ nat_router_dhcp_option: "option:router,{{ nat_router_ip }}"
 nat_router_static_ips: []
 nat_router_dns_servers:
   - "8.8.8.8"
-  - "4.4.4.4"
+  - "8.8.4.4"
 nat_router_fw_input_rules: []
