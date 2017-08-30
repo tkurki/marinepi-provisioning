@@ -8,4 +8,7 @@ iface {{ nat_router_local_interface }} inet static
 {% endif %}
   address {{ nat_router_ip }}
   netmask {{ nat_router_netmask }}
+{% if nat_router_gateway is defined %}
+  gateway {{ nat_router_gateway }}
+{% endif %}
   post-up if [ -f /etc/iptables.ipv4.nat ]; then iptables-restore < /etc/iptables.ipv4.nat; fi
