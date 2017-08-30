@@ -24,7 +24,8 @@ nat_router_inet_interface: eth0
 nat_router_ip: 192.168.74.1
 nat_router_netmask: 255.255.255.0
 nat_router_dhcp_range: "192.168.74.100,192.168.74.150,24h"
-nat_router_dhcp_option: "option:router,{{ nat_router_ip }}"
+nat_router_dhcp_options:
+  - "option:router,{{ nat_router_ip }}"
 nat_router_static_ips: []
 nat_router_dns_servers:
   - "8.8.8.8"

@@ -11,7 +11,9 @@ cache-size=10000
 local-ttl=300
 interface={{ nat_router_local_interface }}
 dhcp-range={{ nat_router_dhcp_range }}
-dhcp-option={{ nat_router_dhcp_option }}
+{% for option in nat_router_dhcp_options %}
+dhcp-option={{ option }}
+{% endfor %}
 
 #log-queries
 #log-facility=/var/log/dnsmasq.log
