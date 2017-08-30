@@ -4,12 +4,10 @@ ms-dns 8.8.8.8
 ms-dns 8.8.4.4
 noccp
 auth
-crtscts
 idle 1800
 mtu 1200
 mru 1200
 nodefaultroute
 debug
-lock
 proxyarp
 connect-delay 5000
