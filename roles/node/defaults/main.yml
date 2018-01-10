@@ -3,4 +3,4 @@
 nodejs_armv6_version: latest-boron   # Latest 6.x series LTS release
 
 # For ARMv7 models (>= 2). This should match NodeSource's versioning (e.g. 4.x, 5.x or 4.4.0)
-nodejs_armv7_version: 7.x
+nodejs_armv7_version: 8.x
