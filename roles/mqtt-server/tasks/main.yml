@@ -14,11 +14,11 @@
 
 ---
 - name: Install PGP key for Mosquitto repository
-  apt_key: url=https://ftp-master.debian.org/keys/archive-key-6.0.asc state=present
+  apt_key: url=http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key state=present
 
 - name: Add Mosquitto repository
   apt_repository:
-    repo: deb http://repo.mosquitto.org/debian jessie main
+    repo: deb http://repo.mosquitto.org/debian stretch main
     state: present
 
 - name: Install Mosquitto
