@@ -1,2 +1,4 @@
 ---
 unattended_upgrades_allow_reboot: true
+unattended_upgrades_email:
+unattended_upgrades_origins:

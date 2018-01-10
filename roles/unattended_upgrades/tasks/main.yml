@@ -42,3 +42,22 @@
       insertafter: '^//Unattended-Upgrade::Automatic-Reboot '
       line: 'Unattended-Upgrade::Automatic-Reboot "true";'
     when: unattended_upgrades_allow_reboot
+
+  - name: Send email about unattended upgrades
+    lineinfile:
+      dest: /etc/apt/apt.conf.d/50unattended-upgrades
+      state: present
+      regexp: '^Unattended-Upgrade::Mail '
+      insertafter: '^//Unattended-Upgrade::Mail '
+      line: 'Unattended-Upgrade::Mail "{{ unattended_upgrades_email }}";'
+    when: unattended_upgrades_email is not none
+
+  - name: Set custom upgrade origin patterns
+    lineinfile:
+      dest: /etc/apt/apt.conf.d/50unattended-upgrades
+      state: present
+      regexp: ' // Set by Ansible'
+      insertafter: '^Unattended-Upgrade::Origins-Pattern '
+      line: '{{ unattended_upgrades_origins }}  // Set by Ansible'
+    when: unattended_upgrades_origins is not none
+
