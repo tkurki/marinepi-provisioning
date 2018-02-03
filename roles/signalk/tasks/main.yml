@@ -45,6 +45,11 @@
     with_items: "{{ signalk_plugins }}"
     when: signalk_plugins is defined
 
+  - name: build admin-ui and plugin-config
+    command: "npm run prepublishOnly"
+    args:
+      chdir: /opt/signalk-server
+
   - name: Restart SignalK server
     service: name=signalk-server state=restarted
     when: signalk_settings.changed
