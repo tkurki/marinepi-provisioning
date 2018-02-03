@@ -16,9 +16,9 @@
     apt: pkg=libavahi-compat-libdnssd-dev state=latest
 
   - name: "Install mdns for Signal K server"
-    command: "npm install mdns"
-    args:
-      chdir: /opt/signalk-server
+    npm:
+      name: mdns
+      path: /opt/signalk-server
 
   - name: Copy Default SignalK server settings
     copy:
