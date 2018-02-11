@@ -4,3 +4,6 @@ nodejs_armv6_version: latest-boron   # Latest 6.x series LTS release
 
 # For ARMv7 models (>= 2). This should match NodeSource's versioning (e.g. 4.x, 5.x or 4.4.0)
 nodejs_armv7_version: 8.x
+
+# Set to true for giving node raw networking capabilities. Used to enable non-root node user for receiving BTLE messages
+nodejs_cap_net_raw_capabilities: false

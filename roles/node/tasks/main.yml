@@ -21,3 +21,11 @@
 
 - name: Install build-essential package
   apt: pkg=build-essential state=latest
+
+- name: Give node capabilities for raw networking
+  capabilities:
+    path: /usr/bin/node
+    capability: cap_net_raw+eip
+  when: nodejs_cap_net_raw_capabilities
+  become: yes
+  
