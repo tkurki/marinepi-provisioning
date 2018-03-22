@@ -7,10 +7,10 @@
 if [ "${if_up}" = "true" ] && [ "${interface}" = "{{ upnpc_interface }}" ] && [ "${new_ip_address}" != "${old_ip_address}" ] && ([ "${reason}" = "BOUND" ] || [ "${reason}" = "REBIND" ] || [ "${reason}" = "REBOOT" ]); then
 {% if upnpc_port_forwards is defined %}
   logger -t dhcpcd "Setting up UPnP port forwards: {{ upnpc_port_forwards }}"
-  upnpc -p /dev/null -r {{ upnpc_port_forwards }} 2>&1 | logger -t upnpc
+  upnpc -p /dev/null -m {{ upnpc_interface }} -r {{ upnpc_port_forwards }} 2>&1 | logger -t upnpc
 {% endif %}
 {% for forward in upnpc_port_redirects %}
   logger -t dhcpcd "Adding UPnP port forwards: {{ forward }}"
-  upnpc -p /dev/null -a {{ forward }} 2>&1 | logger -t upnpc
+  upnpc -p /dev/null -m {{ upnpc_interface }} -a {{ forward }} 2>&1 | logger -t upnpc
 {% endfor %}
 fi
