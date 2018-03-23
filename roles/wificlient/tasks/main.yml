@@ -16,8 +16,7 @@
 #  Networks with hidden ssid can be enabled by setting scan_ssid: 1
 #
 #  From security point of view, network credentials could also be imported from 
-#  local environment variables or an Ansible vault.
-#  
+#  local environment variables or an Ansible vault.  
 
 ---
 ##############################################################################
@@ -27,30 +26,13 @@
   notify: reboot
 
 ##############################################################################
-# Interfaces
-
-- name: Remove wificlient interface references from the main interface file 
-  replace:
-    dest=/etc/network/interfaces
-    regexp='^.*{{ wificlient_interface }}(.|\n)*?(\n|\Z)$'
-    replace=''
-  notify: restart-networking
-
-- name: Ensure interface.d source-dir reference
-  lineinfile: 
-    dest=/etc/network/interfaces 
-    line='source-directory /etc/network/interfaces.d'
-  notify: restart-networking
-  
-- name: Add separate file for hotspot to interface.d
-  template: src=interface.j2 dest=/etc/network/interfaces.d/{{ wificlient_interface }}_wificlient
-  notify: restart-networking
-    
-##############################################################################
 # wpa supplicant
 
 - name: Configure wpa_supplicant 
-  template: src=wpa_supplicant_conf.j2 dest=/etc/wpa_supplicant/wpa_supplicant.conf 
+  template: 
+    src: wpa_supplicant_conf.j2
+    dest: /etc/wpa_supplicant/wpa_supplicant-{{ wificlient_interface }}.conf 
+    mode: '0600'
   notify: restart-networking
 
 # Reboot due to possible changes now
