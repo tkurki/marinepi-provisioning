@@ -25,7 +25,7 @@
 - name: Install packages
   apt: pkg={{ item }} state=latest
   with_items:
-    - openswan
+    - strongswan
     - xl2tpd
 
 - name: Enable IPv4 forwarding
@@ -40,7 +40,15 @@
   copy: src=80-ipsec.dhcpcd.conf dest=/lib/dhcpcd/dhcpcd-hooks/80-ipsec.conf
 
 - name: Set IPSec PSK secret
-  lineinfile: 'dest=/etc/ipsec.secrets regexp="^%any %any: PSK.*" line="%any %any: PSK \"{{ l2tp_vpn_psk }}\"" create=yes'
+  lineinfile: 'dest=/etc/ipsec.secrets regexp="^%any %any : PSK.*" line="%any %any : PSK \"{{ l2tp_vpn_psk }}\"" create=yes'
+  notify: restart_ipsec
+
+- name: Enable ipsec secrets
+  lineinfile:
+    dest: /etc/strongswan.d/charon/stroke.conf
+    regexp: "^    secrets_file = .*"
+    line: "    secrets_file = /etc/ipsec.secrets"
+    insertafter: "^    # secrets_file = .*"
   notify: restart_ipsec
 
 - name: Configure xl2tpd
