@@ -63,13 +63,13 @@
   notify: reboot
 
 - name: Autoremove any unused packages
-  shell: "apt-get autoremove --assume-yes --purge"
-  register: autoremove_output
-  changed_when: "'The following packages will be REMOVED' in autoremove_output.stdout"
+  apt:
+    autoremove: yes
 
 - name: Autoclean the system
-  shell: "apt-get autoclean --assume-yes"
-
+  apt:
+    autoclean: yes
+    
 - name: Some shell aliases for the user
   lineinfile: dest=~{{ ansible_ssh_user }}/.bashrc line="{{ item }}"
   with_items:
