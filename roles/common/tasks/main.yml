@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-#Assuming fresh Raspbian Jessie Lite
+# Assuming fresh Raspbian Stretch Lite
 
 - name: Set hostname
   hostname: name={{ hostname }}
