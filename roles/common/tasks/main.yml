@@ -40,7 +40,6 @@
 - name: Install/update some basic tools
   apt: pkg={{ item }} state=latest
   with_items:
-    - unattended-upgrades
     - build-essential
     - git
     - curl
