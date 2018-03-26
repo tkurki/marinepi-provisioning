@@ -1,7 +1,0 @@
-# Ansible-generated configuration file
-
-auto {{ wificlient_interface }}
-allow-hotplug {{ wificlient_interface }}
-iface {{ wificlient_interface }} inet manual
-  wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
-  wireless-power {{ wificlient_power_management }}

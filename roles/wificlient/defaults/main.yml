@@ -1,10 +1,8 @@
 ---
-wificlient_interface: wlan1
+wificlient_interface: wlan0
   
 wificlient_networks:
   - ssid: defaultssid
     psk: defaultpassphrase
     priority: 1
     scan_ssid: 0
-
-wificlient_power_management: "on"
