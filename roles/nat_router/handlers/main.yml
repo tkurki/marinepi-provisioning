@@ -1,3 +1,9 @@
 ---
 - name: restart_dnsmasq
   service: name=dnsmasq state=restarted enabled=yes
+
+- name: restart_dhcpcd
+  service: name=dhcpcd state=restarted enabled=yes
+
+- name: restart_hostapd
+  service: name=hostapd state=restarted enabled=yes

@@ -17,10 +17,22 @@
 #       nat_router_fw_input_rules:
 #         - "-A INPUT -i {{ nat_router_inet_interface }} -s 192.168.8.1 -j ACCEPT"    # Allow traffic from Huawei HiLink modem's private interface
 #
+#  It is also possible to bridge interfaces, for example as follows:
+#    - role: nat_router
+#      nat_router_local_interface: br0
+#      nat_router_inet_interface: br0
+#      nat_router_bridge_interfaces: 
+#        - eth0
+#        - wlan0
 #
+#  When using only bridged interfaces, one should set 
+#      nat_router_bridge_only: true
+
 ---
 nat_router_local_interface: wlan0
 nat_router_inet_interface: eth0
+nat_router_bridge_interfaces: []
+nat_router_bridge_only: false
 nat_router_ip: 192.168.74.1
 nat_router_netmask: 255.255.255.0
 nat_router_dhcp_range: "192.168.74.100,192.168.74.150,24h"

@@ -59,14 +59,23 @@
   template: src=interface.j2 dest=/etc/network/interfaces.d/{{ nat_router_local_interface }}_hotspot  # NOTE: filename must match ^[a-zA-Z0-9_-]+$ (no '.' allowed!)
   notify: restart-networking
 
+- name: add bridge to hostapd.conf # Note: Hotspot role should be run first!
+  lineinfile: 
+    dest=/etc/hostapd/hostapd.conf 
+    line='bridge=br0'
+  when: nat_router_bridge_interfaces|join(" ") is search("wlan")
+  notify: restart_hostapd
+
 - name: Disable DHCP client on local interface
   lineinfile: dest=/etc/dhcpcd.conf regexp='^denyinterfaces .*' line='denyinterfaces {{ nat_router_local_interface }}'
+  notify: restart_dhcpcd
 
 ##############################################################################
 # Routing and NATting
 
 - name: Enable IPv4 forwarding
   lineinfile: dest=/etc/sysctl.conf regexp='.*net.ipv4.ip_forward.*' line='net.ipv4.ip_forward=1'
+  when: nat_router_bridge_only == false
   notify: reload_sysctl
 
 # Run handlers to get all network interfaces up before applying firewall configuration
@@ -75,7 +84,8 @@
 - name: iptables config file
   template: src=iptables_conf.j2 dest=/etc/iptables.ipv4.nat
   register: iptables_config
+  when: nat_router_bridge_only == false
 
 - name: Import iptables config
   shell: iptables-restore < /etc/iptables.ipv4.nat
-  when: iptables_config.changed
+  when: iptables_config.changed and nat_router_bridge_only == false

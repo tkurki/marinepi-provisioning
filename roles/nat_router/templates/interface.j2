@@ -1,14 +1,23 @@
-# Hotspot
+{% for interface in nat_router_bridge_interfaces %}
+{% if "wlan" in interface %}
+allow-hotplug {{ interface }}
+{% else %}
+auto {{ interface }}
+{% endif %}
+iface {{ interface }} inet manual
 
+{% endfor %}
 auto {{ nat_router_local_interface }}
 allow-hotplug {{ nat_router_local_interface }}
 iface {{ nat_router_local_interface }} inet static
 {% if nat_router_bridge_interfaces is defined %}
-  bridge_ports {{ nat_router_bridge_interfaces }}
+  bridge_ports {{ nat_router_bridge_interfaces|join(" ") }}
 {% endif %}
   address {{ nat_router_ip }}
   netmask {{ nat_router_netmask }}
 {% if nat_router_gateway is defined %}
   gateway {{ nat_router_gateway }}
 {% endif %}
+{% if nat_router_bridge_only == false %}
   post-up if [ -f /etc/iptables.ipv4.nat ]; then iptables-restore < /etc/iptables.ipv4.nat; fi
+{% endif %}
