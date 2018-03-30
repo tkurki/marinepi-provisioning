@@ -1,0 +1,6 @@
+---
+- name: restart_dnsmasq
+  service: name=dnsmasq state=restarted enabled=yes
+
+- name: restart_nfs-kernel-server
+  service: name=nfs-kernel-server state=restarted enabled=yes

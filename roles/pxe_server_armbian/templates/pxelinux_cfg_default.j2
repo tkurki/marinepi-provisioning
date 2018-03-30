@@ -1,0 +1,8 @@
+default armbian
+prompt 0
+timeout 3
+
+label armbian
+kernel {{ pxe_server_kernel_file }}
+fdt {{ pxe_server_device_tree_file }}
+append netboot=nfs initrd={{ pxe_server_initrd_file }} root=/dev/nfs nfsroot={{ pxe_server_ip }}:{{ pxe_server_nfs_path }} ip=dhcp rw
