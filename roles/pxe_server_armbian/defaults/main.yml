@@ -1,0 +1,27 @@
+#############################################################################################
+#
+#  Default configuration for pxe_server role
+#
+#  - Put your client's MAC and desired IP addresses in 
+#    pxe_server_static_hosts variable.
+#  - Download client's image and put it available in the desired
+#    (local) directory, make pxe_server_boot_files_local_path point 
+#    to that directory.
+#  - Extract initrd, kernel and device tree files from the client's 
+#    image and put them to the same directory.
+
+---
+pxe_server_ip: 192.168.74.10
+pxe_server_static_hosts: 
+  - "00:11:22:33:44:55, 192.168.74.1"
+
+pxe_server_tftp_path: /srv/tftp_root
+pxe_server_nfs_path: /srv/nfs/armbian
+pxe_server_nfs_client: 192.168.74.1
+
+pxe_server_boot_files_local_path: /tmp/orangepibootfiles
+pxe_server_initrd_file: uInitrd-4.14.18-sunxi
+pxe_server_kernel_file: vmlinuz-4.14.18-sunxi
+pxe_server_device_tree_file: sun8i-h2-plus-orangepi-zero.dtb
+pxe_server_image_path: /usr/share/images
+pxe_server_image_file: Armbian_5.38_Orangepizero_Debian_stretch_next_4.14.14.img

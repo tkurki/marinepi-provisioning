@@ -1,0 +1,3 @@
+{% for host in pxe_server_static_hosts %}
+dhcp-host={{ host }}
+{% endfor %}

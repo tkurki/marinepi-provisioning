@@ -1,0 +1,77 @@
+# Copyright 2018 Harri Kapanen <harri.kapanen@iki.fi>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+##############################################################################
+#
+#  This role creates a PXE server for booting diskless (armbian) devices via network 
+
+---
+# PXE server
+
+- name: Install dnsmasq
+  apt: pkg=dnsmasq state=latest
+  notify: restart_dnsmasq
+
+- name: Add static dhcp mappings
+  template: src=static_pxe_hosts.conf.j2 dest=/etc/dnsmasq.d/static_pxe_hosts.conf
+  notify: restart_dnsmasq
+
+- name: create bootp.conf
+  template: src=bootp_conf.j2 dest=/etc/dnsmasq.d/bootp.conf
+  notify: restart_dnsmasq
+
+- name: copy over boot files
+  copy:
+    src: "{{ pxe_server_boot_files_local_path }}/{{ item }}"
+    dest: "{{ pxe_server_tftp_path }}/"
+  with_items:
+    - "{{ pxe_server_initrd_file }}"
+    - "{{ pxe_server_kernel_file }}"
+    - "{{ pxe_server_device_tree_file }}"
+
+- name: create pxelinux.cfg directory
+  file: path={{ pxe_server_tftp_path }}/pxelinux.cfg state=directory
+
+- name: create pxelinux.cfg/default file
+  template: src=pxelinux_cfg_default.j2 dest={{ pxe_server_tftp_path }}/pxelinux.cfg/default
+
+# NFS server for RootFS
+
+- name: Install NFS server
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - nfs-common
+    - nfs-kernel-server
+  notify: restart_nfs-kernel-server
+
+- name: Create /etc/exports
+  template: src=exports.j2 dest=/etc/exports
+  notify: restart_nfs-kernel-server
+  
+- name: Create NFS mount directory
+  file:
+    path: "{{ pxe_server_nfs_path }}"
+    state: directory
+    mode: 0755
+
+- name: Copy image file
+  copy:
+    src: "{{ pxe_server_boot_files_local_path }}/{{ pxe_server_image_file }}"
+    dest: "{{ pxe_server_image_path }}/"
+
+- name: Attach loopback
+  command: losetup -Pf {{ pxe_server_image_path }}/{{ pxe_server_image_file }}
+
+- name: Mount the image
+  command: mount /dev/loop0p1 {{ pxe_server_nfs_path }}
