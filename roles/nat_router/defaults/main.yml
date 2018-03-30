@@ -25,14 +25,15 @@
 #        - eth0
 #        - wlan0
 #
-#  When using only bridged interfaces, one should set 
-#      nat_router_bridge_only: true
+#  One can also disable NATting and routing but still run networking
+#  and related services, like dnsmasq, by setting:
+#      nat_router_disable: true
 
 ---
 nat_router_local_interface: wlan0
 nat_router_inet_interface: eth0
 nat_router_bridge_interfaces: []
-nat_router_bridge_only: false
+nat_router_disable: false
 nat_router_ip: 192.168.74.1
 nat_router_netmask: 255.255.255.0
 nat_router_dhcp_range: "192.168.74.100,192.168.74.150,24h"

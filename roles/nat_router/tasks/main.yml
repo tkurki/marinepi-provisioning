@@ -48,14 +48,14 @@
     line='source-directory /etc/network/interfaces.d'
   notify: restart-networking
 
-- name: Remove hotspot interface reference from the main interface file 
+- name: Remove local interface reference from the main interface file 
   replace:
     dest=/etc/network/interfaces
     regexp='^.*{{ nat_router_local_interface }}(.|\n)*?(\n|\Z)$'
     replace=''
   notify: restart-networking
 
-- name: Add separate file for hotspot to interface.d
+- name: Add separate file for local interface to interface.d directory
   template: src=interface.j2 dest=/etc/network/interfaces.d/{{ nat_router_local_interface }}_hotspot  # NOTE: filename must match ^[a-zA-Z0-9_-]+$ (no '.' allowed!)
   notify: restart-networking
 
@@ -75,7 +75,7 @@
 
 - name: Enable IPv4 forwarding
   lineinfile: dest=/etc/sysctl.conf regexp='.*net.ipv4.ip_forward.*' line='net.ipv4.ip_forward=1'
-  when: nat_router_bridge_only == false
+  when: nat_router_disable == false
   notify: reload_sysctl
 
 # Run handlers to get all network interfaces up before applying firewall configuration
@@ -84,8 +84,8 @@
 - name: iptables config file
   template: src=iptables_conf.j2 dest=/etc/iptables.ipv4.nat
   register: iptables_config
-  when: nat_router_bridge_only == false
+  when: nat_router_disable == false
 
 - name: Import iptables config
   shell: iptables-restore < /etc/iptables.ipv4.nat
-  when: iptables_config.changed and nat_router_bridge_only == false
+  when: iptables_config.changed and nat_router_disable == false

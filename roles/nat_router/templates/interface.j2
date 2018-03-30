@@ -18,6 +18,6 @@ iface {{ nat_router_local_interface }} inet static
 {% if nat_router_gateway is defined %}
   gateway {{ nat_router_gateway }}
 {% endif %}
-{% if nat_router_bridge_only == false %}
+{% if nat_router_disable == false %}
   post-up if [ -f /etc/iptables.ipv4.nat ]; then iptables-restore < /etc/iptables.ipv4.nat; fi
 {% endif %}
