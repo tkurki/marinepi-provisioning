@@ -40,7 +40,7 @@
 
 - name: Install/update bridge-utils if needed
   apt: pkg=bridge-utils state=latest
-  when: nat_router_bridge_interfaces is defined
+  when: nat_router_bridge_interfaces|length > 0
 
 - name: Ensure interface.d source-dir reference
   lineinfile: 

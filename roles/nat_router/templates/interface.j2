@@ -10,7 +10,7 @@ iface {{ interface }} inet manual
 auto {{ nat_router_local_interface }}
 allow-hotplug {{ nat_router_local_interface }}
 iface {{ nat_router_local_interface }} inet static
-{% if nat_router_bridge_interfaces is defined %}
+{% if nat_router_bridge_interfaces|length > 0 %}
   bridge_ports {{ nat_router_bridge_interfaces|join(" ") }}
 {% endif %}
   address {{ nat_router_ip }}
