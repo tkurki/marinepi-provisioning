@@ -22,6 +22,8 @@ Usage
   - `touch /Volumes/boot/ssh`
 1. Connect the to-be-provisioned Raspberry Pi to the local network.
 1. Run either `./firstrun.sh` (uses hostname `raspberrypi.local`) or `./firstrun.sh <ip-of-your-raspi>` ([find out the IP address](https://www.raspberrypi.org/documentation/remote-access/ip-address.md)) to copy over your [ssh key](https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md) & do the initial setup (change password for user `pi`, copy the ssh key, expand the filesystem)
+1. When it asks you for SSH password type in `raspberry` (default password for `pi` user) and hit return.
+1. When asked for a new password what you enter will be the new password for the `pi` user on the device.
 1. Edit configuration in `example-boat.yml` to match your environment and fill in your hotspot details
 1. Run `./provision.sh <ip-of-your-raspi> example-boat.yml` to provision the software & configurations for the roles in example-boat.yml.
 
