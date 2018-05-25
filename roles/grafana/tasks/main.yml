@@ -28,7 +28,7 @@
   apt: pkg=grafana state=latest
   become: true
 
-- name: HTTP API listen only on localhost
+- name: HTTP port
   lineinfile:
     dest: '/etc/grafana/grafana.ini'
     line: 'http_port = {{ grafana_port}}'
