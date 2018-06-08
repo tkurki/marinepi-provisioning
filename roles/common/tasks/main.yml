@@ -87,6 +87,10 @@
   lineinfile: dest=/boot/config.txt regexp='^#(dtparam=spi=on)$' line='\1' backrefs=yes
   notify: reboot
 
+- name: Enable I2C
+  lineinfile: dest=/boot/config.txt regexp='^#(dtparam=i2c_arm=on)$' line='\1' backrefs=yes
+  notify: reboot
+
 - name: Use minimum amount of memory for GPU
   lineinfile: dest=/boot/config.txt regexp='^gpu_mem=' line='gpu_mem=16'
   notify: reboot
