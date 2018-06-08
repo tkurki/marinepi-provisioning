@@ -20,6 +20,11 @@
       name: mdns
       path: /opt/signalk-server
 
+  - name: "Install socketcan for Signal K server"
+    npm:
+      name: socketcan
+      path: /opt/signalk-server
+
   - name: Copy Default SignalK server settings
     copy:
       src: /opt/signalk-server/settings/settings.json
