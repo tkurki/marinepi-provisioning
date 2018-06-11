@@ -32,6 +32,7 @@
       src: /opt/signalk-server/settings/settings.json
       dest: /etc/signalk-settings.json
       mode: 0644
+      owner: "{{ ansible_user }}"
       remote_src: true
     when: signalk_settings_file is not defined
     register: signalk_settings
@@ -41,6 +42,7 @@
       src: '{{ signalk_settings_file }}'
       dest: /etc/signalk-settings.json
       mode: 0644
+      owner: "{{ ansible_user }}"
     when: signalk_settings_file is defined
     register: signalk_settings
 
