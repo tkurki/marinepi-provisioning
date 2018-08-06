@@ -1,0 +1,30 @@
+---
+- name: Install PGP key for Zerotier repository
+  apt_key: url=https://download.zerotier.com/contact@zerotier.com.gpg state=present
+
+- name: Add Zerotier repository
+  apt_repository:
+    repo: deb http://download.zerotier.com/debian/stretch stretch main
+    state: present
+
+- name: Install zerotier-one
+  apt: pkg=zerotier-one state=latest
+
+- name: List joined networks
+  shell: zerotier-cli listnetworks | grep {{zerotier_network_id}}
+  ignore_errors: yes
+  register: zerotier_network
+
+- name: Join Zerotier network
+  shell: zerotier-cli join {{zerotier_network_id}}
+  when: zerotier_network.stdout == ""
+
+- name: Check zerotier moon
+  shell: zerotier-cli listpeers | grep {{zerotier_moon_id}}
+  ignore_errors: yes
+  register: zerotier_moon
+  when: zerotier_moon_id is defined
+
+- name: Orbit Zerotier moon
+  shell: zerotier-cli orbit {{zerotier_moon_id}} {{zerotier_moon_id}}
+  when: zerotier_moon_id is defined and zerotier_moon.stdout == ""
