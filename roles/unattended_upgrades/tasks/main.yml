@@ -23,9 +23,7 @@
 #
 ---
   - name: Install/update dependencies
-    apt: pkg={{ item }} state=latest update_cache=yes
-    with_items:
-      - unattended-upgrades
+    apt: pkg=unattended-upgrades state=latest update_cache=yes
 
   - name: Enable automatic updates
     copy:
