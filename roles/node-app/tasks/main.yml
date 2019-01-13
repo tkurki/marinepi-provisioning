@@ -30,7 +30,7 @@
   file: path={{ node_app_path }} state=directory mode=0755 owner={{ node_app_user }} group={{ node_app_group }}
 
 - name: "{{ node_app_name }} | Pull sources from the repository"
-  git: repo={{ node_app_git_repo }} dest={{ node_app_path }} force=yes version=master
+  git: repo={{ node_app_git_repo }} dest={{ node_app_path }} force=yes version={{ node_app_git_branch }}
   become_user: "{{ node_app_user }}"
   register: git_pull
 

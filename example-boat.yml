@@ -31,13 +31,21 @@
     #
     #- timezone: Europe/Helsinki
 
-    # signalk_setings_file - config file for server (optional)
+    # SignalK node server git branch (optional)
+    #
+    #  Defaults to 'latest', referring to the latest released version.
+    #  Other interesting options would be 'master', referring to the
+    #  latest development version, or (say) 'v1.9.1', referring to a
+    #  specific released version.
+    #- signalk_server_git_branch: latest
+
+    # signalk_settings_file - config file for server (optional)
     #
     #  defaults to the testing config file. Uncomment to override. for
     #  examples see:
     #    https://github.com/SignalK/signalk-server-node/tree/master/settings
     #
-    #- signalk_setings_file: ./settings.json
+    #- signalk_settings_file: ./settings.json
 
     - wificlient_networks:
        - ssid: <your marina ssid 1 here>

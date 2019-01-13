@@ -16,9 +16,9 @@ dependencies:
   - role: node-app
     node_app_name: "signalk-server"
     node_app_git_repo: "https://github.com/SignalK/signalk-server-node.git"
+    node_app_git_branch: "{{ signalk_server_git_branch | default('latest') }}"
     node_app_main: "bin/signalk-server"
     node_app_env:
       - "NODE_ENV=production"
       - "EXTERNALPORT=80"
       - "SIGNALK_NODE_SETTINGS=/etc/signalk-settings.json"
-      
