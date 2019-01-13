@@ -27,7 +27,7 @@
   failed_when: False
 
 - name: Get latest available Node.js tarball filename
-  shell: curl https://nodejs.org/dist/{{ nodejs_armv6_version }}/ | grep armv6l.tar.gz | sed 's/.*>\(.*\)<\/a>.*/\1/g'
+  shell: curl https://nodejs.org/dist/{{ nodejs_armv6_version }}/ | grep armv6l.tar.gz | sed 's/.*>\(.*\)<\/a>.*/\1/g' || /bin/true
   args:
     warn: False
   register: latest_node_filename
@@ -36,6 +36,7 @@
 - name: Get latest available Node.js version
   set_fact:
     latest_node_version: "{{ latest_node_filename.stdout | regex_search('node-(.*)-linux-armv6l.tar.gz', '\\1') | first }}"
+  when: latest_node_filename.stdout != ""
 
 - name: Install Node.js
   block:
@@ -56,4 +57,5 @@
   - name: Clear temporary files
     file: path=/tmp/nodejs.tar.gz state=absent
 
-  when: (not node_exists.stat.exists) or (latest_node_version != installed_node_version.stdout)
+  when: (not node_exists.stat.exists)
+        or (latest_node_version is defined and (latest_node_version != installed_node_version.stdout))
