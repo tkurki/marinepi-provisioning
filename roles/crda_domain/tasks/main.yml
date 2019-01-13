@@ -1,7 +1,10 @@
 ---
 - name: Install necessary packages
-  apt: pkg={{ item }} state=latest
-  with_items:
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
     - wireless-regdb
     - iw
     - crda
