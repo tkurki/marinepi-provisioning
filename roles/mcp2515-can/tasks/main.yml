@@ -6,20 +6,11 @@
     line="dtoverlay=mcp2515-{{ mcp2515_can_device }},oscillator={{ mcp2515_oscillator_freq }},interrupt={{ mcp2515_int_pin }}"
   notify: reboot
 
-- name: Bring up CAN device on boot
-  lineinfile:
-    dest: /etc/rc.local
-    regexp: '^ip link set {{ mcp2515_can_device }} up type can bitrate'
-    line: "ip link set {{ mcp2515_can_device }} up type can bitrate {{ mcp2515_bitrate }} || true"
-    insertbefore: "^exit 0$"
-  notify: reboot
-
-- name: Set CAN device tx queue length on boot
-  lineinfile:
-    dest: /etc/rc.local
-    regexp: '^ip link set {{ mcp2515_can_device }} txqueuelen'
-    line: "ip link set {{ mcp2515_can_device }} txqueuelen {{ mcp2515_tx_queuelen }}  || true"
-    insertafter: "^ip link set {{ mcp2515_can_device }} up"
+- name: Setup a CAN device
+  template:
+    src: can.j2
+    dest: /etc/network/interfaces.d/{{ mcp2515_can_device }}
+    mode: '0644'
   notify: reboot
 
 - name: Install can-utils
