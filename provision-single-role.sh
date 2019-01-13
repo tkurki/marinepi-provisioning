@@ -8,9 +8,13 @@ shift 1
 cat > /tmp/play.yml <<PLAYBOOK
 ---
 - hosts: all
+  remote_user: pi
+  gather_facts: yes
+  become: yes
+
   roles:
   - $role
 PLAYBOOK
 
 export ANSIBLE_ROLES_PATH=$(dirname $0)/roles
-ansible-playbook /tmp/play.yml -i $1, -u pi
+ansible-playbook /tmp/play.yml -i $1,
