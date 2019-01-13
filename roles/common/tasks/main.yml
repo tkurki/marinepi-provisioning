@@ -21,13 +21,9 @@
 - name: New hostname also to /etc/hosts file
   lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1' line='127.0.1.1 {{ hostname }}'
 
-- name: Copy timezone file
-  template: src=timezone.j2 dest=/etc/timezone mode=0644
-  register: timezone_result
-
 - name: Set timezone
-  command: dpkg-reconfigure -f noninteractive tzdata
-  when: timezone_result.changed
+  timezone:
+    name: "{{ timezone }}"
 
 - name: Update the apt cache
   apt: update_cache=yes cache_valid_time=7200
