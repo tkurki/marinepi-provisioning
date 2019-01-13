@@ -14,10 +14,11 @@
 ---
 - name: 'Install pysk dependencies'
   apt:
-    pkg: '{{item}}'
+    name: '{{ packages }}'
     state: latest
   become: true
-  with_items:
+  vars:
+    packages:
     - build-essential
     - python-all-dev
     - python-setuptools

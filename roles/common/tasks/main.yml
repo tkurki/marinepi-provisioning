@@ -34,8 +34,11 @@
   notify: reboot
 
 - name: Install/update some basic tools
-  apt: pkg={{ item }} state=latest
-  with_items:
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
     - build-essential
     - git
     - curl
@@ -64,7 +67,7 @@
 - name: Autoclean the system
   apt:
     autoclean: yes
-    
+
 - name: Some shell aliases for the user
   lineinfile: dest=~{{ ansible_ssh_user }}/.bashrc line="{{ item }}"
   with_items:
