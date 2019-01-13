@@ -1,0 +1,4 @@
+auto {{ mcp2515_can_device }}
+iface {{ mcp2515_can_device }} can static
+        bitrate {{ mcp2515_bitrate }}
+        up /sbin/ifconfig {{ mcp2515_can_device }} txqueuelen {{ mcp2515_tx_queuelen }}

@@ -69,6 +69,13 @@
     - canboat
     - signalk
     - pysk
+    #- role: mcp2515-can
+    #  mcp2515_can_device: can0
+    #  mcp2515_oscillator_freq: 8000000
+    #  mcp2515_int_pin: 12
+    #  mcp2515_bitrate: 250000
+    #  mcp2515_tx_queuelen: 100
+
 
   handlers:
     - include: handlers/handlers.yml
