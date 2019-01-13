@@ -14,28 +14,46 @@
 
 ---
 
-# Greps & seds the package name part from the directory listing page, result is like 'node-v4.4.1-linux-armv6l'
-# Changes only if Node has not been installed at all (= doesn't do updates at least for now..)
-- name: Get download package name
-  shell: curl https://nodejs.org/dist/{{ nodejs_armv6_version }}/ | grep armv6l.tar.gz | sed 's/.*>\(node-.*\).tar.gz<\/a>.*/\1/g' creates=/usr/local/bin/node
-  register: node_package
+- name: Check for existing Node.js install
+  stat:
+    path: "{{ nodejs_armv6_binary }}"
+  register: node_exists
 
-- name: Generate download url
-  set_fact: node_download_url=https://nodejs.org/dist/{{ nodejs_armv6_version }}/{{ node_package.stdout }}.tar.gz
-  when: node_package.changed
+- name: Get installed Node.js version
+  command: "{{ nodejs_armv6_binary }} --version"
+  register: installed_node_version
+  when: "node_exists.stat.exists"
+  changed_when: False
+  failed_when: False
 
-- name: Download Node.js binary distribution
-  get_url: url={{ node_download_url }} dest=/tmp/nodejs.tar.gz mode=0440
-  when: node_package.changed
+- name: Get latest available Node.js tarball filename
+  shell: curl https://nodejs.org/dist/{{ nodejs_armv6_version }}/ | grep armv6l.tar.gz | sed 's/.*>\(.*\)<\/a>.*/\1/g'
+  args:
+    warn: False
+  register: latest_node_filename
+  changed_when: False
 
-- name: Extract distribution package to /usr/local
-  shell: tar xzf /tmp/nodejs.tar.gz -C /usr/local --strip-components=1 --no-same-owner
-  when: node_package.changed
+- name: Get latest available Node.js version
+  set_fact:
+    latest_node_version: "{{ latest_node_filename.stdout | regex_search('node-(.*)-linux-armv6l.tar.gz', '\\1') | first }}"
 
-- name: Link binary to /usr/bin/node
-  file: src=/usr/local/bin/node dest=/usr/bin/node state=link force=yes
-  when: node_package.changed
+- name: Install Node.js
+  block:
+  - name: Generate download URL
+    set_fact: node_download_url=https://nodejs.org/dist/{{ nodejs_armv6_version }}/node-{{ latest_node_version }}-linux-armv6l.tar.gz
 
-- name: Clear temporary files
-  file: path=/tmp/nodejs.tar.gz state=absent
-  when: node_package.changed
+  - name: Download Node.js binary distribution
+    get_url: url={{ node_download_url }} dest=/tmp/nodejs.tar.gz mode=0440
+
+  - name: Extract distribution package to /usr/local
+    shell: tar xzf /tmp/nodejs.tar.gz -C /usr/local --strip-components=1 --no-same-owner
+    args:
+      warn: False
+
+  - name: Link binary to /usr/bin/node
+    file: src=/usr/local/bin/node dest=/usr/bin/node state=link force=yes
+
+  - name: Clear temporary files
+    file: path=/tmp/nodejs.tar.gz state=absent
+
+  when: (not node_exists.stat.exists) or (latest_node_version != installed_node_version.stdout)
