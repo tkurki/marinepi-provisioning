@@ -15,18 +15,6 @@
   - name: "Install mdns dependency"
     apt: pkg=libavahi-compat-libdnssd-dev state=latest
 
-  - name: "Install mdns for Signal K server"
-    become: no
-    npm:
-      name: mdns
-      path: /opt/signalk-server
-
-  - name: "Install socketcan for Signal K server"
-    become: no
-    npm:
-      name: socketcan
-      path: /opt/signalk-server
-
   - name: Copy Default SignalK server settings
     copy:
       src: /opt/signalk-server/settings/settings.json
