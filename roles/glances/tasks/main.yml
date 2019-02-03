@@ -1,0 +1,48 @@
+# Copyright 2019 Harri Kapanen <harri.kapanen@iki.fi>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This role installs glances in web server mode
+# Monitor your device remotely <my.device.ip:61208>
+# https://nicolargo.github.io/glances/
+
+- name: Install glances
+  pip:
+    name: 
+      - bottle  #web service for glances
+      - glances
+  become: true
+
+- name: Create glances unit file
+  copy:
+    dest: /etc/systemd/system/glances.service
+    content: |
+      [Unit]
+      Description=glances
+
+      [Service]
+      User=pi
+      Group=pi
+      Type=simple
+      ExecStart=/usr/local/bin/glances -w
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+  become: true
+  register: glances_unit_file
+
+- name: Enable glances and start it
+  systemd: name=glances daemon_reload=yes state=restarted enabled=yes
+  when: (glances_unit_file is defined and glances_unit_file.changed)
+  become: true
