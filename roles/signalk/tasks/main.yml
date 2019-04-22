@@ -28,7 +28,7 @@
   - name: Copy Custom SignalK server settings
     copy:
       src: '{{ signalk_settings_file }}'
-      dest: /etc/signalk-settings.json
+      dest: /home/pi/.signalk/defaults.json
       mode: 0644
       owner: "{{ ansible_user }}"
     when: signalk_settings_file is defined

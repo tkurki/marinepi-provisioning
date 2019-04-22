@@ -1,0 +1,32 @@
+---
+- name: Install python setuptools
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - python3-setuptools
+      - python3-dev
+
+- name: Download pi-super-ups
+  git: repo=https://github.com/mairas/pi-super-ups.git dest={{pi_super_ups_directory}} clone=yes force=yes
+  become: no
+  register: pi_super_ups_sources
+
+- name: Install pi-super-ups
+  command: python3 setup.py install
+  args:
+    chdir: "{{pi_super_ups_directory}}/src"
+  when: pi_super_ups_sources.changed
+
+- name: Setup the pi-super-ups systemd service
+  template: src=pi_super_ups_systemd_script.j2 dest=/lib/systemd/system/pi_super_ups.service owner=root group=root mode=0644
+  register: unit_file
+
+- name: "pi_super_ups | Reload systemd"
+  command: systemctl daemon-reload
+  when: unit_file.changed
+
+- name: "pi_super_ups | Restart application"
+  service: name=pi_super_ups state=restarted enabled=yes
+  when: pi_super_ups_sources.changed or unit_file.changed

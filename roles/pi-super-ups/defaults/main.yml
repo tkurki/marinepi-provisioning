@@ -1,0 +1,5 @@
+---
+pi_super_ups_sense_pin: 26
+pi_super_ups_hold_time: 1.0
+pi_super_up_watchdog_pin: 21
+pi_super_ups_directory: pi_super_ups
