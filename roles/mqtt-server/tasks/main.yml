@@ -56,7 +56,7 @@
   file: path={{ mqtt_server_password_file }} state=absent
 
 - name: Create mosquitto password file
-  file: path={{ mqtt_server_password_file }} state=touch mode=0600
+  file: path={{ mqtt_server_password_file }} state=touch owner=mosquitto group=mosquitto mode=0600
   when: mqtt_server_users|length > 0
 
 - name: Setup mosquitto users
