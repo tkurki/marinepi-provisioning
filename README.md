@@ -14,7 +14,7 @@ Usage
 =====
 
 1. [Install Ansible](http://docs.ansible.com/ansible/intro_installation.html) on your local computer
-1. [Initialize a memory card](https://www.raspberrypi.org/documentation/installation/installing-images/) with the latest [Raspbian Jessie Lite](https://www.raspberrypi.org/downloads/raspbian/)
+1. [Initialize a memory card](https://www.raspberrypi.org/documentation/installation/installing-images/) with the latest [Raspbian Jessie Lite](https://www.raspberrypi.org/downloads/raspbian/) with [Etcher](https://www.balena.io/etcher/) or from the command line:
   - `diskutil list`
   - `diskutil unmountDisk /dev/<disk#>`
   - `sudo dd bs=1m if=<your image file>.img of=/dev/<disk#>`
