@@ -1,0 +1,89 @@
+
+- name: signalk group
+  group:
+    name: signalk
+    state: present
+
+- name: Add pi to signalk group
+  user:
+    name: pi
+    groups: signalk
+    append: yes
+
+- name: Add signalk service user
+  user:
+    name: signalk
+    comment: Signal K service account
+    uid: "999"
+    group: signalk
+
+- name: Create service
+  file:
+    path: /etc/signalk-docker-compose
+    state: directory
+  become: true
+
+- name: Signal K with services docker compose config
+  template:
+    src: docker-compose.j2
+    dest: /etc/signalk-docker-compose/docker-compose.yml
+
+- name: Signal K with services docker compose unit file
+  template:
+    src: signalk-docker-compose.service
+    dest: /etc/systemd/system/signalk-docker-compose.service
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "06770"
+    owner: signalk
+    group: signalk
+  with_items:
+    - /home/pi/signalk-docker-data
+    - /home/pi/signalk-docker-data/logs
+    - /home/pi/signalk-docker-data/influxdb
+    - /home/pi/signalk-docker-data/grafana
+    - /home/pi/signalk-docker-data/grafana/provisioning/datasources
+    - /home/pi/.signalk/plugin-config-data
+
+- name: settings - plugins package.json
+  template:
+    src: plugin-package.json
+    dest: /home/pi/.signalk/package.json
+    owner: signalk
+    group: signalk
+
+- name: settings.json
+  template:
+    src: settings.json
+    dest: /home/pi/.signalk/settings.json
+    owner: signalk
+    group: signalk
+    force: no
+
+- name: settings.json
+  template:
+    src: signalk-to-influxdb.json
+    dest: /home/pi/.signalk/plugin-config-data/signalk-to-influxdb.json
+    owner: signalk
+    group: signalk
+    force: no
+
+- name: datasource
+  template:
+    src: datasource.yml
+    dest: /home/pi/signalk-docker-data/grafana/provisioning/datasources/datasource.yaml
+    owner: signalk
+    group: signalk
+
+- name: Install plugins
+  command: docker run -it --rm -v /home/pi/.signalk:/home/signalk/.signalk --entrypoint "/bin/bash" signalk/signalk-server:linux-armhf-latest -c "cd /home/signalk/.signalk && npm install"
+
+- name: Enable service and start it
+  command: "{{item}}"
+  with_items:
+  - systemctl enable signalk-docker-compose
+  - systemctl start signalk-docker-compose
+  become: true

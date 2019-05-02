@@ -1,0 +1,38 @@
+---
+- name: Download docker install script
+  get_url:
+    url: https://get.docker.com
+    dest: /tmp/docker-install.sh
+    mode: "a+x"
+
+- name: Run install script
+  shell: /bin/sh /tmp/docker-install.sh
+
+- name: Remove temporary file
+  file:
+    path: /tmp/docker-install.sh
+    state: absent
+
+- name: Set Docker to auto-start
+  service:
+    name: docker
+    enabled: true
+    state: started
+
+- name: add pi user to docker group
+  user:
+    name: pi
+    groups: docker
+    append: yes
+  become: true
+
+- name: Install pip and deps
+  apt:
+    name:
+      - python3-pip
+      - libffi6
+      - libffi-dev
+    state: latest
+
+- name: Install Docker Compose
+  command: /usr/bin/pip3 install docker-compose

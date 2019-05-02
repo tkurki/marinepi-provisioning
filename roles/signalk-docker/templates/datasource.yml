@@ -1,0 +1,28 @@
+apiVersion: 1
+
+deleteDatasources:
+  - name: Signal K
+    orgId: 1
+
+datasources:
+- name: Signal K
+  id: 1
+  orgId: 1
+  type: influxdb
+  typeLogoUrl: ''
+  access: proxy
+  url: http://influxdb:8086
+  password: ''
+  user: ''
+  database: signalk
+  basicAuth: false
+  basicAuthUser: ''
+  basicAuthPassword: ''
+  withCredentials: false
+  isDefault: true
+  jsonData:
+    keepCookies: []
+  secureJsonFields: {}
+  version: 5
+  readOnly: false
+  editable: true

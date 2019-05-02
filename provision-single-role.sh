@@ -17,4 +17,8 @@ cat > /tmp/play.yml <<PLAYBOOK
 PLAYBOOK
 
 export ANSIBLE_ROLES_PATH=$(dirname $0)/roles
-ansible-playbook /tmp/play.yml -i $1,
+
+host=$1
+shift 1
+
+ansible-playbook /tmp/play.yml -i $host, $*
