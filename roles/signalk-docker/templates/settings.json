@@ -1,0 +1,8 @@
+{
+    "security": {
+      "strategy": "@signalk/sk-simple-token-security"
+    },
+    "mdns": true,
+    "enablePluginLogging": true,
+    "loggingDirectory": "/signalk-log"
+  }

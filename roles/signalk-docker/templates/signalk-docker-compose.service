@@ -1,0 +1,20 @@
+[Unit]
+Description=Signal K Docker Compose server
+After=docker.service network-online.target
+Requires=docker.service network-online.target
+
+[Service]
+WorkingDirectory=/etc/signalk-docker-compose
+Type=oneshot
+RemainAfterExit=yes
+
+ExecStartPre=-/usr/local/bin/docker-compose down
+ExecStart=/usr/local/bin/docker-compose up -d
+
+ExecStop=/usr/local/bin/docker-compose stop
+
+ExecReload=/usr/local/bin/docker-compose pull --quiet --parallel
+ExecReload=/usr/local/bin/docker-compose up -d
+
+[Install]
+WantedBy=multi-user.target

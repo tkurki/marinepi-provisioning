@@ -1,0 +1,36 @@
+version: '2'
+services:
+  signalk:
+    image: "signalk/signalk-server:linux-armhf-master"
+    environment:
+      EXTERNALHOST: {{ hostname }}
+      EXTERNALPORT: 80
+      NODE_ENV: production
+    ports:
+     - "80:3000"
+     - "10110:10110"
+     - "3858:3858"
+    volumes:
+     - "/home/pi/.signalk:/home/signalk/.signalk"
+     - "/home/pi/signalk-docker-data/logs:/signalk-log"
+    restart: always
+    privileged: true
+  influxdb:
+    image: "arm32v7/influxdb:1.7"
+    environment:
+      INFLUXDB_DATA_CACHE_SNAPSHOT_MEMORY_SIZE: 2621440
+    volumes:
+     - "/home/pi/signalk-docker-data/influxdb:/var/lib/influxdb"
+    restart: always
+    user: "999"
+  grafana:
+    image: "grafana/grafana"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: {{ gf_security_admin_password }}
+    ports:
+     - "3001:3000"
+    volumes:
+     - "/home/pi/signalk-docker-data/grafana:/var/lib/grafana"
+     - "/home/pi/signalk-docker-data/grafana/provisioning:/etc/grafana/provisioning/"
+    user: "999"
+    restart: always

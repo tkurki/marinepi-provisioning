@@ -1,0 +1,15 @@
+{
+    "enabled": true,
+    "enableLogging": false,
+    "configuration": {
+        "host": "influxdb",
+        "port": 8086,
+        "database": "signalk",
+        "batchWriteInterval": 5,
+        "resolution": 200,
+        "recordTrack": true,
+        "overrideTimeWithNow": false,
+        "storeOthers": false,
+        "blackOrWhite": "Black"
+    }
+}
