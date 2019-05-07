@@ -1,12 +1,17 @@
 ---
+- name: Populate service facts
+  service_facts:
+
 - name: Download docker install script
   get_url:
     url: https://get.docker.com
     dest: /tmp/docker-install.sh
     mode: "a+x"
+  when: ansible_facts.services['docker.service'] is not defined
 
 - name: Run install script
   shell: /bin/sh /tmp/docker-install.sh
+  when: ansible_facts.services['docker.service'] is not defined
 
 - name: Remove temporary file
   file:
@@ -35,4 +40,7 @@
     state: latest
 
 - name: Install Docker Compose
-  command: /usr/bin/pip3 install docker-compose
+  pip:
+    name: docker-compose
+    state: present
+    executable: pip3
