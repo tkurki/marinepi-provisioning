@@ -1,0 +1,23 @@
+#######################################################################################
+# Setup a docker container to be run as a systemd service
+#
+# NOTE: This role assumes that variables 'docker_app_name' and
+# 'docker_app_container_name' have been set! In addition, docker_app_env and docker_app_ports
+# can be used to set environment variables and port forwards for the container respectively.
+#
+# For example:
+#
+# - role: docker-app
+#   docker_app_name: "hello-world"
+#   docker_app_container_name: "hello-world:latest"
+#   docker_app_env:
+#     - HELLO_VARIABLE=test
+#   docker_app_ports:
+#     - 8000:8000
+
+---
+- name: "{{ docker_app_name }} | Install systemd unit file"
+  template: src=docker-app.service.j2 dest=/lib/systemd/system/{{ docker_app_name }}.service owner=root group=root mode=0644
+  notify:
+    - "{{ docker_app_name }} | Enable and start application"
+
