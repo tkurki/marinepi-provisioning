@@ -1,0 +1,24 @@
+[Unit]
+Description={{ docker_app_name }}
+After=docker.service
+Wants=network-online.target docker.socket
+
+[Service]
+Restart=always
+TimeoutStartSec=5min
+ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect {{ docker_app_name }} 2> /dev/null || \
+                           /usr/bin/docker run \
+                               -d \
+                               --name {{ docker_app_name }} \
+{% for env in docker_app_env %}
+                               -e {{ env }} \
+{% endfor %}
+{% for port in docker_app_ports %}
+                               -p {{ port }} \
+{% endfor %}
+                               {{ docker_app_container_name }}"
+ExecStart=/usr/bin/docker start -a {{ docker_app_name }}
+ExecStop=/usr/bin/docker stop {{ docker_app_name }}
+
+[Install]
+WantedBy=multi-user.target
