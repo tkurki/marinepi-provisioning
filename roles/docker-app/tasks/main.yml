@@ -19,5 +19,5 @@
 - name: "{{ docker_app_name }} | Install systemd unit file"
   template: src=docker-app.service.j2 dest=/lib/systemd/system/{{ docker_app_name }}.service owner=root group=root mode=0644
   notify:
-    - "{{ docker_app_name }} | Enable and start application"
+    - "{{ docker_app_name }} | Enable and restart application"
 

@@ -1,7 +1,7 @@
 ---
-- name: "{{ docker_app_name }} | Enable and start application"
+- name: "{{ docker_app_name }} | Enable and restart application"
   systemd:
     name: "{{ docker_app_name }}"
     daemon_reload: yes
-    state: started
+    state: restarted
     enabled: yes
