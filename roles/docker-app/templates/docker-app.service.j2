@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: "True"
 [Unit]
 Description={{ docker_app_name }}
 After=docker.service
@@ -10,12 +11,15 @@ ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect {{ docker_app_name 
                            /usr/bin/docker run \
                                -d \
                                --name {{ docker_app_name }} \
-{% for env in docker_app_env %}
+                               {% for env in docker_app_env %}
                                -e {{ env }} \
-{% endfor %}
-{% for port in docker_app_ports %}
+                               {% endfor %}
+                               {% for port in docker_app_ports %}
                                -p {{ port }} \
-{% endfor %}
+                               {% endfor %}
+                               {% if docker_app_extra_params %}
+                               {{ docker_app_extra_params }} \
+                               {% endif %}
                                {{ docker_app_container_name }}"
 ExecStart=/usr/bin/docker start -a {{ docker_app_name }}
 ExecStop=/usr/bin/docker stop {{ docker_app_name }}
