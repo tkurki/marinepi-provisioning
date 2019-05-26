@@ -10,6 +10,12 @@ services:
      - "80:3000"
      - "10110:10110"
      - "3858:3858"
+     - "8887:8887/udp"
+     - "8888:8888/udp"
+     - "8889:8889/udp"
+     - "9997:9997"
+     - "9998:9998"
+     - "9999:9999"
     volumes:
      - "/home/pi/.signalk:/home/signalk/.signalk"
      - "/home/pi/signalk-docker-data/logs:/signalk-log"
