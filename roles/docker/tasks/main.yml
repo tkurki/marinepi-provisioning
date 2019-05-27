@@ -18,6 +18,15 @@
     path: /tmp/docker-install.sh
     state: absent
 
+# Fix Docker bug: add containerd as pre-requisite for Docker service, see: https://github.com/docker/for-linux/issues/421
+- name: Start Docker after containerd
+  lineinfile:
+    dest: /lib/systemd/system/docker.service
+    regexp: "^After="
+    line: "After=network-online.target firewalld.service containerd.service"
+  notify: Reload systemd
+  become: true
+
 - name: Set Docker to auto-start
   service:
     name: docker
