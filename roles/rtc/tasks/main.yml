@@ -2,10 +2,11 @@
 - name: Enable RTC
   lineinfile:
     dest: /boot/config.txt
-    regexp: '^#(dtoverlay=i2c-rtc,ds3231)$'
-    line: '\1'
-    backrefs: yes
+    line: 'dtoverlay=i2c-rtc,ds3231'
+    state: present
   notify: reboot
 
-- name: modify /lib/udev/hwclock-set
-  command: sed --in-place='' -e '/systemd/,+2 s/^/#/' /lib/udev/hwclock-set
+- name: Setup udev rule to update system time from RTC
+  copy:
+    src: 85-hwclock.rules
+    dest: /etc/udev/rules.d/85-hwclock.rules
