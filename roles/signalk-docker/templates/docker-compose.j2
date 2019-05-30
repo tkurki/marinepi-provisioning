@@ -19,6 +19,7 @@ services:
     volumes:
      - "/home/pi/.signalk:/home/signalk/.signalk"
      - "/home/pi/signalk-docker-data/logs:/signalk-log"
+     - "/dev/serial:/dev/serial"
     restart: always
     privileged: true
   influxdb:
