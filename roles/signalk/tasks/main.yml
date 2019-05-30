@@ -46,9 +46,10 @@
     notify: restart-signalk-server
 
   - name: Install SignalK server plugins
-    npm:
-      name: "{{ item }}"
-      path: /opt/signalk-server
-      production: yes
+    include:
+      file: install_plugin.yml
+      plugin_name: "{{ item.plugin_name | default(item) }}"
+      plugin_config_src: "{{ item.plugin_config_src | default('') }}"
+      plugin_config_dst: "{{ item.plugin_config_dst | default('') }}"
     with_items: "{{ signalk_plugins }}"
     when: signalk_plugins is defined
