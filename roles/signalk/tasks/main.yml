@@ -23,16 +23,27 @@
       owner: "{{ ansible_user }}"
       remote_src: true
     when: signalk_settings_file is not defined
-    register: signalk_settings
+    notify: restart-signalk-server
+
+  - name: Copy custom SignalK server defaults
+    copy:
+      src: '{{ signalk_defaults_file }}'
+      dest: /home/pi/.signalk/defaults.json
+      mode: 0644
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+    when: signalk_defaults_file is defined
+    notify: restart-signalk-server
 
   - name: Copy Custom SignalK server settings
     copy:
       src: '{{ signalk_settings_file }}'
-      dest: /home/pi/.signalk/defaults.json
+      dest: /home/pi/.signalk/settings.json
       mode: 0644
       owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
     when: signalk_settings_file is defined
-    register: signalk_settings
+    notify: restart-signalk-server
 
   - name: Install SignalK server plugins
     npm:
@@ -41,7 +52,3 @@
       production: yes
     with_items: "{{ signalk_plugins }}"
     when: signalk_plugins is defined
-
-  - name: Restart SignalK server
-    service: name=signalk-server state=restarted
-    when: signalk_settings.changed
