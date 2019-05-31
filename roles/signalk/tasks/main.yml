@@ -15,16 +15,6 @@
   - name: "Install mdns dependency"
     apt: pkg=libavahi-compat-libdnssd-dev state=latest
 
-  - name: Copy Default SignalK server settings
-    copy:
-      src: /opt/signalk-server/settings/settings.json
-      dest: /etc/signalk-settings.json
-      mode: 0644
-      owner: "{{ ansible_user }}"
-      remote_src: true
-    when: signalk_settings_file is not defined
-    notify: restart-signalk-server
-
   - name: Copy custom SignalK server defaults
     copy:
       src: '{{ signalk_defaults_file }}'
