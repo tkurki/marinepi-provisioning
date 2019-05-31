@@ -10,7 +10,7 @@
 - name: "Install SignalK server plugin: {{ plugin_name }}"
   npm:
     name: "{{ plugin_name }}"
-    path: /opt/signalk-server
+    path: "/home/{{ node_app_user }}/.signalk/"
     production: yes
   when: plugin_name is defined
   notify: restart-signalk-server
