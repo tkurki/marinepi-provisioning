@@ -15,33 +15,29 @@
   - name: "Install mdns dependency"
     apt: pkg=libavahi-compat-libdnssd-dev state=latest
 
-  - name: Copy Default SignalK server settings
+  - name: Copy custom SignalK server defaults
     copy:
-      src: /opt/signalk-server/settings/settings.json
-      dest: /etc/signalk-settings.json
+      src: "{{ signalk_defaults_file }}"
+      dest: "/home/{{ node_app_user }}/.signalk/defaults.json"
       mode: 0644
-      owner: "{{ ansible_user }}"
-      remote_src: true
-    when: signalk_settings_file is not defined
-    register: signalk_settings
+    become_user: "{{ node_app_user }}"
+    when: signalk_defaults_file is defined
+    notify: restart-signalk-server
 
   - name: Copy Custom SignalK server settings
     copy:
-      src: '{{ signalk_settings_file }}'
-      dest: /home/pi/.signalk/defaults.json
+      src: "{{ signalk_settings_file }}"
+      dest: "/home/{{ node_app_user }}/.signalk/settings.json"
       mode: 0644
-      owner: "{{ ansible_user }}"
+    become_user: "{{ node_app_user }}"
     when: signalk_settings_file is defined
-    register: signalk_settings
+    notify: restart-signalk-server
 
   - name: Install SignalK server plugins
-    npm:
-      name: "{{ item }}"
-      path: /opt/signalk-server
-      production: yes
+    include:
+      file: install_plugin.yml
+      plugin_name: "{{ item.plugin_name | default(item) }}"
+      plugin_config_src: "{{ item.plugin_config_src | default('') }}"
+      plugin_config_dst: "{{ item.plugin_config_dst | default('') }}"
     with_items: "{{ signalk_plugins }}"
     when: signalk_plugins is defined
-
-  - name: Restart SignalK server
-    service: name=signalk-server state=restarted
-    when: signalk_settings.changed
