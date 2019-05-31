@@ -17,21 +17,19 @@
 
   - name: Copy custom SignalK server defaults
     copy:
-      src: '{{ signalk_defaults_file }}'
-      dest: /home/pi/.signalk/defaults.json
+      src: "{{ signalk_defaults_file }}"
+      dest: "/home/{{ node_app_user }}/.signalk/defaults.json"
       mode: 0644
-      owner: "{{ ansible_user }}"
-      group: "{{ ansible_user }}"
+    become_user: "{{ node_app_user }}"
     when: signalk_defaults_file is defined
     notify: restart-signalk-server
 
   - name: Copy Custom SignalK server settings
     copy:
-      src: '{{ signalk_settings_file }}'
-      dest: /home/pi/.signalk/settings.json
+      src: "{{ signalk_settings_file }}"
+      dest: "/home/{{ node_app_user }}/.signalk/settings.json"
       mode: 0644
-      owner: "{{ ansible_user }}"
-      group: "{{ ansible_user }}"
+    become_user: "{{ node_app_user }}"
     when: signalk_settings_file is defined
     notify: restart-signalk-server
 
