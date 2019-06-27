@@ -1,0 +1,41 @@
+#
+# Role to periodically compress and move files from a local directory to a S3 bucket.
+# NOTE: Script moves only files older than 7 days for now.
+#
+# Example usage:
+#  - role: s3-upload
+#    s3_upload_name: "signalk-raw-logs"
+#    s3_upload_src_dir: "/home/pi/.signalk"
+#    s3_upload_dst: "s3://my-log-bucket/signalk_logs/"
+#    s3_upload_include_pattern: "skserver-raw*.log"
+#    s3_upload_period: "60min"
+#
+---
+- name: Copy s3-upload.sh
+  copy:
+    src: "s3-upload.sh"
+    dest: "/usr/local/bin/s3-upload.sh"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Install systemd unit file"
+  template:
+    src: s3-upload.service.j2
+    dest: /lib/systemd/system/{{ s3_upload_name }}.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - "Reload systemd"
+
+- name: "Install systemd timer file"
+  template:
+    src: s3-upload.timer.j2
+    dest: /lib/systemd/system/{{ s3_upload_name }}.timer
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - "Reload systemd"
+    - "Start timer"

@@ -1,0 +1,9 @@
+[Unit]
+Description=Run S3 upload {{ s3_upload_name }} periodically
+
+[Timer]
+OnBootSec={{ s3_upload_period }}
+OnUnitActiveSec={{ s3_upload_period }}
+
+[Install]
+WantedBy=timers.target

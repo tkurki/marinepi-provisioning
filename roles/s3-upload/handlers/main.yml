@@ -1,0 +1,11 @@
+---
+- name: "Reload systemd"
+  systemd:
+    daemon_reload: yes
+
+- name: "Start timer"
+  systemd:
+    name: "{{ s3_upload_name }}.timer"
+    daemon_reload: yes
+    enabled: yes
+    state: restarted

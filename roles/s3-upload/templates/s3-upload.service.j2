@@ -1,0 +1,11 @@
+[Unit]
+Description={{ s3_upload_name }}
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/s3-upload.sh "{{ s3_upload_src_dir }}" "{{ s3_upload_dst }}" '{{ s3_upload_include_pattern }}'
+User={{ aws_cli_user }}
+
+[Install]
+WantedBy=multi-user.target
