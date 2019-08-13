@@ -15,11 +15,11 @@ Usage
 
 1. [Install Ansible](http://docs.ansible.com/ansible/intro_installation.html) on your local computer
 1. [Initialize a memory card](https://www.raspberrypi.org/documentation/installation/installing-images/) with the latest [Raspbian Jessie Lite](https://www.raspberrypi.org/downloads/raspbian/) with [Etcher](https://www.balena.io/etcher/) or from the command line:
-  - `diskutil list`
-  - `diskutil unmountDisk /dev/<disk#>`
-  - `sudo dd bs=1m if=<your image file>.img of=/dev/<disk#>`
+    - `diskutil list`
+    - `diskutil unmountDisk /dev/<disk#>`
+    - `sudo dd bs=1m if=<your image file>.img of=/dev/<disk#>`
 1. [Enable ssh](https://www.raspberrypi.org/blog/a-security-update-for-raspbian-pixel/) for Raspbian headless operation
-  - `touch /Volumes/boot/ssh`
+    - `touch /Volumes/boot/ssh`
 1. Connect the to-be-provisioned Raspberry Pi to the local network.
 1. Run either `./firstrun.sh` (uses hostname `raspberrypi.local`) or `./firstrun.sh <ip-of-your-raspi>` ([find out the IP address](https://www.raspberrypi.org/documentation/remote-access/ip-address.md)) to copy over your [ssh key](https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md) & do the initial setup (change password for user `pi`, copy the ssh key, expand the filesystem)
 1. When it asks you for SSH password type in `raspberry` (default password for `pi` user) and hit return.
