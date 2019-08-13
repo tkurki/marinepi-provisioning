@@ -26,6 +26,13 @@ Usage
 1. When asked for a new password what you enter will be the new password for the `pi` user on the device.
 1. Edit configuration in `example-boat.yml` to match your environment and fill in your hotspot details
 1. Run `./provision.sh <ip-of-your-raspi> example-boat.yml` to provision the software & configurations for the roles in example-boat.yml.
+    - note: When you see an error like below, this is because the Pi is being rebooted. When the Pi comes back online, restart the provisioning process and it will continue.
+    `RUNNING HANDLER [reboot] ****
+    fatal: [192.168.x.x]: UNREACHABLE! =>`
+    - note: Also just restart the process if your receive this error
+    RUNNING HANDLER [nat_router : restart_hostapd] ***
+    fatal: [192.168.x.x]: FAILED! => {"changed": false, "msg": "Unable to start service hostapd: Failed to start hostapd.service: Unit hostapd.service is masked
+    - note: you might also see an error on installing pysk, see issues on github repo for a solution
 
 
 Roles
