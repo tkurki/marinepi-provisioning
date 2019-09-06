@@ -9,45 +9,19 @@
     - hostname: curiosity-pi
     - timezone: Etc/UTC
 
-  pre_tasks:
-    - name: Show IP address
-      debug:
-        var: ansible_default_ipv4.address
-    - name: Pull boat settings from GitHub
-      git:
-        repo: https://github.com/meri-imperiumi/curiosity.git
-        dest: /home/pi/curiosity
 
   roles:
     - role: common
     - role: signalk
-      signalk_defaults_file: /home/pi/curiosity/signalk/defaults.json
-      signalk_settings_file: /home/pi/curiosity/signalk/settings.json
       signalk_plugins:
       - plugin_name: "@signalk/charts-plugin"
-        plugin_config_src: /home/pi/curiosity/signalk/plugin-config-data/charts.json
-        plugin_config_dst: charts.json
       - plugin_name: "gpxload"
-        plugin_config_src: /home/pi/curiosity/signalk/plugin-config-data/gpxload.json
-        plugin_config_dst: gpxload.json
       - plugin_name: "signalk-anchoralarm-plugin"
-        plugin_config_src: /home/pi/curiosity/signalk/plugin-config-data/anchoralarm.json
-        plugin_config_dst: anchoralarm.json
       - plugin_name: "signalk-simple-notifications"
-        plugin_config_src: /home/pi/curiosity/signalk/plugin-config-data/simple-notifications.json
-        plugin_config_dst: simple-notifications.json
       - plugin_name: "signalk-push-notifications"
-        plugin_config_src: /home/pi/curiosity/signalk/plugin-config-data/push-notifications.json
-        plugin_config_dst: push-notifications.json
       - plugin_name: "signalk-alarm-silencer"
-        plugin_config_src: /home/pi/curiosity/signalk/plugin-config-data/alarmsilencer.json
-        plugin_config_dst: alarmsilencer.json
       - plugin_name: "signalk-wilhelmsk-plugin"
-        plugin_config_src: /home/pi/curiosity/signalk/plugin-config-data/wilhelmsk-plugin.json
-        plugin_config_dst: wilhelmsk-plugin.json
-#     - plugin_name: "@signalk/aisreporter"
-#       plugin_config_src: signalk-aisreporter-conf.json
-#       plugin_config_dst: aisreporter.json
+      - plugin_name: "signalk-raspberry-pi-bme280"
 
   tasks:
     - name: Deploy SSH keys for bergie
@@ -60,6 +34,33 @@
         user: pi
         state: present
         key: https://github.com/cannonerd.keys
+    - name: Pull boat settings from GitHub
+      git:
+        repo: https://github.com/meri-imperiumi/curiosity.git
+        dest: /home/pi/curiosity
+      become: no
+    - name: Copy Signal K settings file
+      copy:
+        src: /home/pi/curiosity/signalk/settings.json
+        dest: /home/pi/.signalk/settings.json
+        remote_src: yes
+      become: no
+    - name: Copy Signal K defaults file
+      copy:
+        src: /home/pi/curiosity/signalk/defaults.json
+        dest: /home/pi/.signalk/defaults.json
+        remote_src: yes
+      become: no
+    - name: Synchronize two directories on one remote host.
+      synchronize:
+        src: /home/pi/curiosity/signalk/plugin-config-data
+        dest: /home/pi/.signalk
+      delegate_to: "{{ inventory_hostname }}"
+      become: no
+    - name: Restart signalk-server
+      service:
+        name: signalk-server
+        state: restarted
 
   handlers:
     - include: ../../handlers/handlers.yml
