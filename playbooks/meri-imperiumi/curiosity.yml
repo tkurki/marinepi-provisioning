@@ -9,6 +9,8 @@
     - hostname: curiosity-pi
     - timezone: Etc/UTC
 
+  vars_files:
+    - curiosity-secrets.yml
 
   roles:
     - role: common
@@ -24,6 +26,11 @@
       - plugin_name: "signalk-raspberry-pi-bme280"
       - plugin_name: "signalk-raspberry-pi-temperature"
       - plugin_name: "@meri-imperiumi/signalk-aws-iot"
+    - role: s3-upload
+      s3_upload_name: "signalk-raw-logs"
+      s3_upload_src_dir: "/home/pi/.signalk"
+      s3_upload_include_pattern: "skserver-raw*.log"
+      s3_upload_period: "60min"
 
   tasks:
     - name: Deploy SSH keys for bergie
