@@ -38,6 +38,8 @@
   shell: chdir={{ node_app_path }} npm install{{ ' --unsafe-perm' if node_app_npm_unsafe_perm else '' }}
   become_user: "{{ node_app_user }}"
   when: git_pull.changed
+  async: 3600
+  poll: 10
 
 - name: "{{ node_app_name }} | Install systemd unit file"
   template: src=node_app_systemd_script.j2 dest=/lib/systemd/system/{{ node_app_name }}.service owner=root group=root mode=0644

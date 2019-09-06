@@ -12,6 +12,8 @@
     name: "{{ plugin_name }}"
     path: "/home/{{ node_app_user }}/.signalk/"
     production: yes
+  async: 3600
+  poll: 10
   become_user: "{{ node_app_user }}"
   when: plugin_name is defined
   notify: restart-signalk-server
