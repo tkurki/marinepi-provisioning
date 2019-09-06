@@ -22,6 +22,8 @@
       - plugin_name: "signalk-alarm-silencer"
       - plugin_name: "signalk-wilhelmsk-plugin"
       - plugin_name: "signalk-raspberry-pi-bme280"
+      - plugin_name: "signalk-raspberry-pi-temperature"
+      - plugin_name: "@meri-imperiumi/signalk-aws-iot"
 
   tasks:
     - name: Deploy SSH keys for bergie
