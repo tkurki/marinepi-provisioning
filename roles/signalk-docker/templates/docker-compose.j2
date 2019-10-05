@@ -1,4 +1,4 @@
-version: '2'
+version: "2.2"
 services:
   signalk:
     image: "signalk/signalk-server:linux-armhf-master"
@@ -7,27 +7,28 @@ services:
       EXTERNALPORT: 80
       NODE_ENV: production
     ports:
-     - "80:3000"
-     - "10110:10110"
-     - "3858:3858"
-     - "8887:8887/udp"
-     - "8888:8888/udp"
-     - "8889:8889/udp"
-     - "9997:9997"
-     - "9998:9998"
-     - "9999:9999"
+      - "80:3000"
+      - "10110:10110"
+      - "3858:3858"
+      - "8887:8887/udp"
+      - "8888:8888/udp"
+      - "8889:8889/udp"
+      - "9997:9997"
+      - "9998:9998"
+      - "9999:9999"
     volumes:
-     - "/home/pi/.signalk:/home/signalk/.signalk"
-     - "/home/pi/signalk-docker-data/logs:/signalk-log"
-     - "/dev/serial:/dev/serial"
+      - "/home/pi/.signalk:/home/signalk/.signalk"
+      - "/home/pi/signalk-docker-data/logs:/signalk-log"
+      - "/dev/serial:/dev/serial"
     restart: always
     privileged: true
+    init: true
   influxdb:
     image: "arm32v7/influxdb:1.7"
     environment:
       INFLUXDB_DATA_CACHE_SNAPSHOT_MEMORY_SIZE: 2621440
     volumes:
-     - "/home/pi/signalk-docker-data/influxdb:/var/lib/influxdb"
+      - "/home/pi/signalk-docker-data/influxdb:/var/lib/influxdb"
     restart: always
     user: "999"
   grafana:
@@ -35,9 +36,9 @@ services:
     environment:
       GF_SECURITY_ADMIN_PASSWORD: {{ gf_security_admin_password }}
     ports:
-     - "3001:3000"
+      - "3001:3000"
     volumes:
-     - "/home/pi/signalk-docker-data/grafana:/var/lib/grafana"
-     - "/home/pi/signalk-docker-data/grafana/provisioning:/etc/grafana/provisioning/"
+      - "/home/pi/signalk-docker-data/grafana:/var/lib/grafana"
+      - "/home/pi/signalk-docker-data/grafana/provisioning:/etc/grafana/provisioning/"
     user: "999"
     restart: always
