@@ -33,9 +33,9 @@
     enabled: true
     state: started
 
-- name: add pi user to docker group
+- name: add regular user to docker group
   user:
-    name: pi
+    name: "{{ docker_regular_user }}"
     groups: docker
     append: yes
   become: true
