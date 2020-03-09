@@ -14,12 +14,12 @@
 - name: reload_sysctl
   shell: "sysctl -p"
 
-# Keep these at the end to run the reboot handler after all other handlers
+# Keep this at the end to run the reboot handler after all other handlers
 - name: reboot
-  shell: shutdown -r now &
-  ignore_errors: true
-  notify: wait-for-reboot
-
-- name: wait-for-reboot
-  local_action: wait_for host="{{ inventory_hostname }}" port=22 search_regex=OpenSSH delay=10
-  become: false
+  reboot:
+    msg: "Reboot initiated by Ansible"
+    connect_timeout: 5
+    reboot_timeout: 120
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: whoami  
