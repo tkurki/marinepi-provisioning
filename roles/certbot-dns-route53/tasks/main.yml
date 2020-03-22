@@ -1,0 +1,19 @@
+---
+- name: Install Certbot & Route53 plugin
+  apt:
+    state: latest
+    cache_valid_time: 3600
+    pkg:
+      - certbot
+      - python3-certbot-dns-route53
+      - python-pexpect
+  tags: certbot
+
+- name: Get certificate
+  expect:
+    command: "certbot certonly --dns-route53 -d {{ certbot_certificate_domains | join(' -d ') }} -m {{ certbot_email }} --agree-tos"
+    responses:
+      .*\(Y\)es\/\(N\)o: N
+    timeout: 120
+    creates: /etc/letsencrypt/live
+  tags: certbot
