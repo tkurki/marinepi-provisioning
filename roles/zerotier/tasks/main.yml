@@ -4,7 +4,7 @@
 
 - name: Add Zerotier repository
   apt_repository:
-    repo: deb http://download.zerotier.com/debian/stretch stretch main
+    repo: "deb http://download.zerotier.com/debian/{{ ansible_distribution_release }} {{ ansible_distribution_release }} main"
     state: present
 
 - name: Install zerotier-one
