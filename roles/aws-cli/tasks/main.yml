@@ -22,10 +22,15 @@
     name=awscli
     state=latest
 
-- name: Set home directory of the user
+- name: Set home directory for regular user
   set_fact:
     home_dir: /home/{{ aws_cli_user }}
-  when: "not \"{{ aws_cli_user }}\" == \"root\""
+  when: not aws_cli_user == "root"
+
+- name: Set home directory for root
+  set_fact:
+    home_dir: /root
+  when: aws_cli_user == "root"
 
 - name: Create the AWS config directory
   file: >
@@ -41,4 +46,4 @@
     dest={{ home_dir }}/.aws/config
     owner={{ aws_cli_user }}
     group={{ aws_cli_user }}
-    mode=0644
+    mode=0600
