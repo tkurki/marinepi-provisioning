@@ -16,6 +16,12 @@
 # Monitor your device remotely <my.device.ip:61208>
 # https://nicolargo.github.io/glances/
 
+- name: Install pip
+  apt:
+    name:
+      - pip2  # glances dependency
+  become: true
+
 - name: Install glances
   pip:
     name: 
