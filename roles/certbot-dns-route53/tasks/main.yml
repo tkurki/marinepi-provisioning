@@ -7,11 +7,28 @@
       - certbot
       - python3-certbot-dns-route53
       - python-pexpect
+      - python3-pexpect
+  tags: certbot
+
+- name: Create certbot deploy-hook directory
+  file:
+    path: /etc/letsencrypt/renewal-hooks/deploy
+    state: directory
+    recurse: true
+  when: certbot_deploy_hook != ""
+  tags: certbot
+
+- name: Install certbot deploy-hook if provided
+  copy:
+    dest: "/etc/letsencrypt/renewal-hooks/deploy/{{ certbot_deploy_hook_name }}"
+    content: "{{ certbot_deploy_hook }}"
+    mode: "755"
+  when: certbot_deploy_hook != ""
   tags: certbot
 
 - name: Get certificate
   expect:
-    command: "certbot certonly --dns-route53 -d {{ certbot_certificate_domains | join(' -d ') }} -m {{ certbot_email }} --agree-tos"
+    command: "certbot certonly --deploy-hook /etc/letsencrypt/renewal-hooks/deploy/{{ certbot_deploy_hook_name }} --dns-route53 -d {{ certbot_certificate_domains | join(' -d ') }} -m {{ certbot_email }} --agree-tos"
     responses:
       .*\(Y\)es\/\(N\)o: N
     timeout: 120

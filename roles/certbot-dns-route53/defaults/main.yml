@@ -14,4 +14,5 @@
 ---
 certbot_certificate_domains:
   - "{{ inventory_hostname }}"
-certbot_post_hook: ""
+certbot_deploy_hook: ""
+certbot_deploy_hook_name: "10-default.sh"
