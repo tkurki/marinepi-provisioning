@@ -1,0 +1,21 @@
+---
+- name: "{{ docker_compose_name }} | Set service directory fact"
+  set_fact:
+    docker_compose_service_dir: "{{ docker_compose_service_base_dir }}/{{ docker_compose_name }}"
+
+- name: "{{ docker_compose_name }} | Create service directory"
+  file:
+    path: "{{ docker_compose_service_dir }}"
+    state: directory
+
+- name: "{{ docker_compose_name }} | Create docker-compose configuration"
+  copy:
+    dest: "{{ docker_compose_service_dir }}/docker-compose.yml"
+    content: "{{ docker_compose_file }}"
+  notify: "{{ docker_compose_name }} | Enable and restart"
+
+- name: "{{ docker_compose_name }} | Install systemd unit file"
+  template:
+    src: docker-compose.service.j2
+    dest: "/etc/systemd/system/{{ docker_compose_name }}.service"
+  notify: "{{ docker_compose_name }} | Enable and restart"

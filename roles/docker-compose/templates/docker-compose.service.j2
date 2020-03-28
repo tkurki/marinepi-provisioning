@@ -1,0 +1,23 @@
+[Unit]
+Description={{ docker_compose_name }}
+After=docker.service network-online.target
+Requires=docker.service network-online.target
+
+[Service]
+Restart=always
+RestartSec=15s
+
+WorkingDirectory={{ docker_compose_service_dir }}
+
+ExecStartPre=-/usr/local/bin/docker-compose down
+ExecStartPre=-/usr/local/bin/docker-compose rm -f
+
+ExecStart=/usr/local/bin/docker-compose up
+
+ExecStop=/usr/local/bin/docker-compose stop
+
+ExecReload=/usr/local/bin/docker-compose pull --quiet --parallel
+ExecReload=/usr/local/bin/docker-compose up
+
+[Install]
+WantedBy=multi-user.target

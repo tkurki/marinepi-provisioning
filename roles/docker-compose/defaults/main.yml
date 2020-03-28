@@ -1,0 +1,2 @@
+---
+docker_compose_service_base_dir: "/srv"
