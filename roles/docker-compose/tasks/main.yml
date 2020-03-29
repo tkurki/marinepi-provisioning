@@ -7,6 +7,7 @@
   file:
     path: "{{ docker_compose_service_dir }}"
     state: directory
+    mode: 0700
 
 - name: "{{ docker_compose_name }} | Create docker-compose configuration"
   copy:
