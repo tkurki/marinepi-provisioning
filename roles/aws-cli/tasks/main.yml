@@ -13,9 +13,11 @@
 # limitations under the License.
 ---
 - name: 'Install Python PIP'
-  apt: >
-    pkg=python-pip
-    state=latest
+  apt:
+    state: latest
+    pkg:
+      - python-pip
+      - python3-pip
 
 - name: 'Install AWS CLI'
   pip: >
