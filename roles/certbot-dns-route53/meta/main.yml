@@ -14,3 +14,4 @@
 ---
 dependencies:
   - role: aws-cli
+    tags: certbot
