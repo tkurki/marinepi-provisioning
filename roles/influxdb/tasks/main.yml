@@ -32,6 +32,7 @@
 - name: Custom configuration for RPi
   lineinfile: dest=/etc/influxdb/influxdb.conf line="  cache-snapshot-memory-size = 2621440" insertafter="  \# cache-snapshot-memory-size.*"
   become: true
+  when: ansible_lsb.id == "Raspbian"
 
 # - name: HTTP API listen only on localhost
 #   lineinfile:
