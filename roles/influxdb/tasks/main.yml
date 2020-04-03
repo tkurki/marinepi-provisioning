@@ -34,13 +34,6 @@
   become: true
   when: ansible_lsb.id == "Raspbian"
 
-# - name: HTTP API listen only on localhost
-#   lineinfile:
-#     dest: '/etc/influxdb/influxdb.conf'
-#     line: '  bind-address = "localhost:8086"'
-#     regexp: '  # bind-address = ":8086"'
-#   become: true
-
 - name: Reload systemd
   command: systemctl daemon-reload
   become: true
