@@ -62,7 +62,7 @@
 - name: Setup mosquitto users
   command: "mosquitto_passwd -b {{ mqtt_server_password_file }} {{ item.username }} {{ item.password }}"
   no_log: true
-  with_items: "{{ mqtt_server_users }}"
+  loop: "{{ mqtt_server_users }}"
   when: mqtt_server_users|length > 0
 
 - name: Setup mosquitto ACL file
