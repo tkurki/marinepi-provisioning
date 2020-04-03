@@ -18,7 +18,7 @@
 
 - name: Add Mosquitto repository
   apt_repository:
-    repo: deb http://repo.mosquitto.org/debian stretch main
+    repo: "deb http://repo.mosquitto.org/debian {{ ansible_distribution_release }} main"
     state: present
 
 - name: Install Mosquitto
