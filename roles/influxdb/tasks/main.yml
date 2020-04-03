@@ -20,7 +20,7 @@
 
 - name: Add InfluxDb APT repository
   apt_repository:
-    repo: "deb https://repos.influxdata.com/debian {{ ansible_distribution_release }} main"
+    repo: "deb https://repos.influxdata.com/debian {{ ansible_distribution_release }} stable"
     update_cache: yes
   become: true
 
