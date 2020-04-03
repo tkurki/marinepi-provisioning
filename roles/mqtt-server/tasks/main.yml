@@ -31,7 +31,7 @@
   copy:
     dest: /etc/mosquitto/conf.d/custom.conf
     content: "{{ mqtt_server_config }}"
-  register: mosquitto_conf_file
+  notify: Restart Mosquitto
 
 - name: Create Mosquitto unit file
   copy:
@@ -50,7 +50,7 @@
 
       [Install]
       WantedBy=multi-user.target
-  register: mosquitto_unit_file
+  notify: Restart Mosquitto
 
 - name: Remove mosquitto password file
   file: path={{ mqtt_server_password_file }} state=absent
@@ -70,8 +70,7 @@
     dest: "{{ mqtt_server_acl_file }}"
     content: "{{ mqtt_server_acl_config }}"
   when: mqtt_server_acl_config != ""
-  register: mosquitto_acl_file
+  notify: Restart Mosquitto
 
 - name: Enable mosquitto and start it
-  systemd: name=mosquitto daemon_reload=yes state=restarted enabled=yes
-  when: (mosquitto_unit_file is defined and mosquitto_unit_file.changed) or (mosquitto_conf_file is defined and mosquitto_conf_file.changed) or (mosquitto_acl_file is defined and mosquitto_acl_file.changed)
+  systemd: name=mosquitto daemon_reload=yes state=started enabled=yes
