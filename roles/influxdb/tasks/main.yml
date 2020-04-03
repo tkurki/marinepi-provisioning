@@ -34,13 +34,6 @@
   become: true
   when: ansible_lsb.id == "Raspbian"
 
-- name: Reload systemd
-  command: systemctl daemon-reload
-  become: true
-
-- name: Enable service and start it
-  command: "{{item}}"
-  with_items:
-  - systemctl enable influxdb
-  - systemctl start influxdb
+- name: Enable & start InfluxDB
+  systemd: name=influxdb state=started enabled=yes daemon_reload=yes
   become: true
