@@ -18,7 +18,7 @@
 
 - name: Add Mosquitto repository
   apt_repository:
-    repo: deb http://repo.mosquitto.org/debian stretch main
+    repo: "deb http://repo.mosquitto.org/debian {{ ansible_distribution_release }} main"
     state: present
 
 - name: Install Mosquitto
@@ -31,7 +31,7 @@
   copy:
     dest: /etc/mosquitto/conf.d/custom.conf
     content: "{{ mqtt_server_config }}"
-  register: mosquitto_conf_file
+  notify: Restart Mosquitto
 
 - name: Create Mosquitto unit file
   copy:
@@ -50,19 +50,22 @@
 
       [Install]
       WantedBy=multi-user.target
-  register: mosquitto_unit_file
+  notify: Restart Mosquitto
 
 - name: Remove mosquitto password file
   file: path={{ mqtt_server_password_file }} state=absent
+  changed_when: False
 
 - name: Create mosquitto password file
   file: path={{ mqtt_server_password_file }} state=touch owner=mosquitto group=mosquitto mode=0600
+  changed_when: False
   when: mqtt_server_users|length > 0
 
 - name: Setup mosquitto users
   command: "mosquitto_passwd -b {{ mqtt_server_password_file }} {{ item.username }} {{ item.password }}"
   no_log: true
-  with_items: "{{ mqtt_server_users }}"
+  loop: "{{ mqtt_server_users }}"
+  changed_when: False
   when: mqtt_server_users|length > 0
 
 - name: Setup mosquitto ACL file
@@ -70,8 +73,7 @@
     dest: "{{ mqtt_server_acl_file }}"
     content: "{{ mqtt_server_acl_config }}"
   when: mqtt_server_acl_config != ""
-  register: mosquitto_acl_file
+  notify: Restart Mosquitto
 
 - name: Enable mosquitto and start it
-  systemd: name=mosquitto daemon_reload=yes state=restarted enabled=yes
-  when: (mosquitto_unit_file is defined and mosquitto_unit_file.changed) or (mosquitto_conf_file is defined and mosquitto_conf_file.changed) or (mosquitto_acl_file is defined and mosquitto_acl_file.changed)
+  systemd: name=mosquitto daemon_reload=yes state=started enabled=yes
