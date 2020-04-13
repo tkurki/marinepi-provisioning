@@ -54,6 +54,15 @@
     when: unattended_upgrades_email is not none
     tags: unattended_upgrades
 
+  - name: Enable automatic upgrades for distro-updates repository
+    lineinfile:
+      dest: /etc/apt/apt.conf.d/50unattended-upgrades
+      state: present
+      regexp: 'origin=Debian,codename=\${distro_codename}-updates'
+      line: '        "origin=Debian,codename=${distro_codename}-updates";'
+    when: unattended_upgrades_email is not none
+    tags: unattended_upgrades
+
   - name: Set custom upgrade origin patterns
     lineinfile:
       dest: /etc/apt/apt.conf.d/50unattended-upgrades
