@@ -1,0 +1,53 @@
+---
+- name: Create zerotier moon configuration
+  shell:
+    cmd: "zerotier-idtool initmoon /var/lib/zerotier-one/identity.public > /var/lib/zerotier-one/moon.json"
+    creates: /var/lib/zerotier-one/moon.json
+  become_user: zerotier-one
+  when: zerotier_create_moon
+  tags: zerotier
+
+- name: Add default IPv4 address as zerotier moon stable endpoint
+  lineinfile:
+    dest: /var/lib/zerotier-one/moon.json
+    state: present
+    regexp: 'stableEndpoints'
+    line: '   "stableEndpoints": ["{{ ansible_default_ipv4.address }}/9993"]'
+  when: zerotier_create_moon
+  tags: zerotier
+
+- name: Create zerotier moons.d directory
+  file:
+    path: /var/lib/zerotier-one/moons.d
+    state: directory
+  become_user: zerotier-one
+  when: zerotier_create_moon
+  tags: zerotier
+
+- name: Check moon id
+  shell:
+    cmd: "cat /var/lib/zerotier-one/moon.json | grep 'id\":' | sed 's/.*\"id\": \"\\(.*\\)\",/\\1/g'"
+  register: zerotier_moon_id_check
+  check_mode: no
+  changed_when: False
+  when: zerotier_create_moon
+  tags: zerotier
+
+- name: Check moon file
+  find:
+    paths: /var/lib/zerotier-one/moons.d
+    patterns: "*{{ zerotier_moon_id_check.stdout }}.moon"
+  register: zerotier_moon_file
+  check_mode: no
+  changed_when: False
+  when: zerotier_create_moon
+  tags: zerotier
+
+- name: Generate zerotier moon
+  shell:
+    cmd: "zerotier-idtool genmoon /var/lib/zerotier-one/moon.json"
+    chdir: /var/lib/zerotier-one/moons.d
+  become_user: zerotier-one
+  when: zerotier_create_moon and zerotier_moon_file.matched == 0
+  notify: Restart zerotier
+  tags: zerotier

@@ -50,3 +50,8 @@
   shell: "zerotier-cli set {{ zerotier_network_id }} allowManaged={{ (zerotier_allow_managed == true) | ternary('1','0') }}"
   when: zerotier_allow_managed_state.stdout is defined and zerotier_allow_managed != (zerotier_allow_managed_state.stdout | bool)
   tags: zerotier
+
+- name: Create zerotier moon
+  import_tasks: create_moon.yml
+  when: zerotier_create_moon
+  tags: zerotier
