@@ -27,7 +27,7 @@
   tags: zerotier
 
 - name: Check zerotier moon
-  shell: zerotier-cli listpeers | grep {{zerotier_moon_id}}
+  shell: zerotier-cli listpeers | grep MOON | grep {{zerotier_moon_id}}
   register: zerotier_moon
   failed_when: zerotier_moon.rc > 1
   when: zerotier_moon_id is defined
