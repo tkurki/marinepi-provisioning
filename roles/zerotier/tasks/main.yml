@@ -37,7 +37,7 @@
 
 - name: Orbit Zerotier moon
   shell: zerotier-cli orbit {{zerotier_moon_id}} {{zerotier_moon_id}}
-  when: zerotier_moon_id.stdout is defined and zerotier_moon.stdout == ""
+  when: zerotier_moon.stdout is defined and zerotier_moon.stdout == ""
   tags: zerotier
 
 - name: Check allowManaged
