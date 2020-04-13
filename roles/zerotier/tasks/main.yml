@@ -17,6 +17,7 @@
   shell: zerotier-cli listnetworks | grep {{zerotier_network_id}}
   register: zerotier_network
   failed_when: zerotier_network.rc > 1
+  check_mode: no
   changed_when: False
   tags: zerotier
 
@@ -26,16 +27,17 @@
   tags: zerotier
 
 - name: Check zerotier moon
-  shell: zerotier-cli listpeers | grep {{zerotier_moon_id}}
+  shell: zerotier-cli listpeers | grep MOON | grep {{zerotier_moon_id}}
   register: zerotier_moon
   failed_when: zerotier_moon.rc > 1
   when: zerotier_moon_id is defined
+  check_mode: no
   changed_when: False
   tags: zerotier
 
 - name: Orbit Zerotier moon
   shell: zerotier-cli orbit {{zerotier_moon_id}} {{zerotier_moon_id}}
-  when: zerotier_moon_id.stdout is defined and zerotier_moon.stdout == ""
+  when: zerotier_moon.stdout is defined and zerotier_moon.stdout == ""
   tags: zerotier
 
 - name: Check allowManaged
@@ -47,4 +49,9 @@
 - name: Set allowManaged
   shell: "zerotier-cli set {{ zerotier_network_id }} allowManaged={{ (zerotier_allow_managed == true) | ternary('1','0') }}"
   when: zerotier_allow_managed_state.stdout is defined and zerotier_allow_managed != (zerotier_allow_managed_state.stdout | bool)
+  tags: zerotier
+
+- name: Create zerotier moon
+  import_tasks: create_moon.yml
+  when: zerotier_create_moon
   tags: zerotier

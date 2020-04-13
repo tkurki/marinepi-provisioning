@@ -1,2 +1,3 @@
 ---
 zerotier_allow_managed: true
+zerotier_create_moon: false
