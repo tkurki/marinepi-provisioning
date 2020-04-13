@@ -24,6 +24,7 @@
 ---
   - name: Install/update dependencies
     apt: pkg=unattended-upgrades state=latest update_cache=yes
+    tags: unattended_upgrades
 
   - name: Enable automatic updates
     copy:
@@ -31,6 +32,7 @@
       content: |
         APT::Periodic::Update-Package-Lists "1";
         APT::Periodic::Unattended-Upgrade "1";
+    tags: unattended_upgrades
 
   - name: Let server reboot if update requires it
     lineinfile:
@@ -40,6 +42,7 @@
       insertafter: '^//Unattended-Upgrade::Automatic-Reboot '
       line: 'Unattended-Upgrade::Automatic-Reboot "true";'
     when: unattended_upgrades_allow_reboot
+    tags: unattended_upgrades
 
   - name: Send email about unattended upgrades
     lineinfile:
@@ -49,6 +52,16 @@
       insertafter: '^//Unattended-Upgrade::Mail '
       line: 'Unattended-Upgrade::Mail "{{ unattended_upgrades_email }}";'
     when: unattended_upgrades_email is not none
+    tags: unattended_upgrades
+
+  - name: Enable automatic upgrades for distro-updates repository
+    lineinfile:
+      dest: /etc/apt/apt.conf.d/50unattended-upgrades
+      state: present
+      regexp: 'origin=Debian,codename=\${distro_codename}-updates'
+      line: '        "origin=Debian,codename=${distro_codename}-updates";'
+    when: unattended_upgrades_email is not none
+    tags: unattended_upgrades
 
   - name: Set custom upgrade origin patterns
     lineinfile:
@@ -58,4 +71,5 @@
       insertafter: '^Unattended-Upgrade::Origins-Pattern '
       line: '{{ unattended_upgrades_origins }}  // Set by Ansible'
     when: unattended_upgrades_origins is not none
+    tags: unattended_upgrades
 
