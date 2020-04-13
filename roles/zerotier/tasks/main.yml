@@ -17,6 +17,7 @@
   shell: zerotier-cli listnetworks | grep {{zerotier_network_id}}
   register: zerotier_network
   failed_when: zerotier_network.rc > 1
+  check_mode: no
   changed_when: False
   tags: zerotier
 
@@ -30,6 +31,7 @@
   register: zerotier_moon
   failed_when: zerotier_moon.rc > 1
   when: zerotier_moon_id is defined
+  check_mode: no
   changed_when: False
   tags: zerotier
 
