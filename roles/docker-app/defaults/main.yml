@@ -3,3 +3,4 @@ docker_app_env: []
 docker_app_ports: []
 docker_app_extra_params: ""
 docker_app_syslog_identifier: "{{ docker_app_name }}"
+docker_app_restart_delay: "10s"
