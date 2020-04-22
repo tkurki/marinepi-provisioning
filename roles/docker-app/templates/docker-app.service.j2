@@ -7,6 +7,8 @@ Wants=network-online.target docker.socket
 [Service]
 Restart=always
 TimeoutStartSec=5min
+SyslogIdentifier={{ docker_app_syslog_identifier }}
+RestartSec={{ docker_app_restart_delay }}
 ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect {{ docker_app_name }} 2> /dev/null || \
                            /usr/bin/docker run \
                                -d \
@@ -20,7 +22,7 @@ ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect {{ docker_app_name 
                                {% if docker_app_extra_params %}
                                {{ docker_app_extra_params }} \
                                {% endif %}
-                               {{ docker_app_container_name }}"
+                               {{ docker_app_container_name }}{% if docker_app_container_params %} {{ docker_app_container_params }}{% endif %}"
 ExecStart=/usr/bin/docker start -a {{ docker_app_name }}
 ExecStop=/usr/bin/docker stop {{ docker_app_name }}
 
