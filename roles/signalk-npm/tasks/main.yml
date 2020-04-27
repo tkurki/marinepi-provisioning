@@ -1,0 +1,102 @@
+#
+# Role for installing SignalK NodeJS server using NPM
+#
+# Sample usage in a playbook:
+#
+# - role: signalk-npm
+#      signalk_defaults_file: my-custom-signalk-defaults.json
+#      signalk_settings_file: my-custom-signalk-settings.json
+#      signalk_plugins:
+#       - plugin_name: "@signalk/aisreporter"
+#         plugin_config_src: my-custom-aisreporter-conf.json
+#         plugin_config_dst: aisreporter.json
+#
+---
+  - name: "Install NodeJS"
+    include_role:
+      name: node
+      apply:
+        tags: always
+    tags: signalk-npm
+
+  - name: "Install mdns dependency"
+    apt: pkg=libavahi-compat-libdnssd-dev state=latest
+    tags: signalk-npm
+
+  - name: "Install SignalK server"
+    npm:
+      name: signalk-server
+      production: yes
+      unsafe_perm: yes
+      global: yes
+    async: 3600
+    poll: 10
+    notify: restart-signalk-server
+    tags: signalk-npm
+
+  - name: "Setup SignalK server systemd service"
+    template:
+      src: signalk.service.j2
+      dest: /etc/systemd/system/signalk-server.service
+      owner: root
+      group: root
+      mode: 0644
+    notify: restart-signalk-server
+    tags: signalk-npm
+
+  - name: "Setup SignalK systemd socket"
+    template:
+      src: signalk.socket.j2
+      dest: /etc/systemd/system/signalk-server.socket
+      owner: root
+      group: root
+      mode: 0644
+    notify: restart-signalk-server
+    tags: signalk-npm
+
+  - name: "Create .signalk directory"
+    file:
+      path: "/home/{{ signalk_user }}/.signalk"
+      state: directory
+      owner: "{{ signalk_user }}"
+      group: "{{ signalk_user }}"
+    when: signalk_defaults_file is defined or signalk_settings_file is defined or signalk_plugins is defined
+    tags: signalk-npm
+
+  - name: "Copy custom SignalK server defaults"
+    copy:
+      src: "{{ signalk_defaults_file }}"
+      dest: "/home/{{ signalk_user }}/.signalk/defaults.json"
+      mode: 0644
+    become_user: "{{ signalk_user }}"
+    when: signalk_defaults_file is defined
+    notify: restart-signalk-server
+    tags: signalk-npm
+
+  - name: "Copy Custom SignalK server settings"
+    copy:
+      src: "{{ signalk_settings_file }}"
+      dest: "/home/{{ signalk_user }}/.signalk/settings.json"
+      mode: 0644
+    become_user: "{{ signalk_user }}"
+    when: signalk_settings_file is defined
+    notify: restart-signalk-server
+    tags: signalk-npm
+
+  - name: "Install SignalK server plugins"
+    include:
+      file: install_plugin.yml
+      plugin_name: "{{ item.plugin_name | default(item) }}"
+      plugin_config_src: "{{ item.plugin_config_src | default('') }}"
+      plugin_config_dst: "{{ item.plugin_config_dst | default('') }}"
+    loop: "{{ signalk_plugins }}"
+    when: signalk_plugins is defined
+    tags: signalk-npm
+
+  - name: "Enable and start SignalK server socket"
+    service: name=signalk-server.socket state=started enabled=yes
+    tags: signalk-npm
+
+  - name: "Enable and start SignalK server service"
+    service: name=signalk-server.service state=started enabled=yes
+    tags: signalk-npm

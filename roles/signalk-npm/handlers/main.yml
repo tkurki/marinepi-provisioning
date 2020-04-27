@@ -1,0 +1,3 @@
+---
+- name: restart-signalk-server
+  systemd: name=signalk-server.service state=restarted daemon_reload=yes

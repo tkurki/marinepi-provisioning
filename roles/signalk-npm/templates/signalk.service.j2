@@ -1,0 +1,14 @@
+[Unit]
+Description=SignalK Server
+Wants=network-online.target
+
+[Service]
+Type=exec
+Restart=always
+RestartSec=15s
+User={{ signalk_user }}
+Group={{ signalk_user_group }}
+ExecStart=/usr/bin/signalk-server
+
+[Install]
+WantedBy=multi-user.target
