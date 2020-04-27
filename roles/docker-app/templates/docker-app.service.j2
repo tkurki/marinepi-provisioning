@@ -6,7 +6,7 @@ Wants=network-online.target docker.socket
 
 [Service]
 Restart=always
-TimeoutStartSec=5min
+TimeoutStartSec={{ docker_app_start_timeout }}
 SyslogIdentifier={{ docker_app_syslog_identifier }}
 RestartSec={{ docker_app_restart_delay }}
 ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect {{ docker_app_name }} 2> /dev/null || \
