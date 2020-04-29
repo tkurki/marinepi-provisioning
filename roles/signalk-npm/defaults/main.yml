@@ -1,0 +1,4 @@
+---
+signalk_user: pi
+signalk_user_group: pi
+signalk_server_port: 80
