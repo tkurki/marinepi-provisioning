@@ -18,6 +18,16 @@
 ---
 - name: "{{ docker_app_name }} | Install systemd unit file"
   template: src=docker-app.service.j2 dest=/lib/systemd/system/{{ docker_app_name }}.service owner=root group=root mode=0644
+  register: unit_file
   notify:
     - "{{ docker_app_name }} | Enable and restart application"
+  tags: "{{ docker_app_name }}"
+
+- name: "{{ docker_app_name }} | Enable and start service"
+  systemd:
+    name: "{{ docker_app_name }}"
+    daemon_reload: yes
+    state: started
+    enabled: yes
+  when: not unit_file.changed
   tags: "{{ docker_app_name }}"
