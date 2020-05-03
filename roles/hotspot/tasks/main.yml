@@ -34,5 +34,8 @@
   lineinfile: dest=/etc/default/hostapd regexp='^DAEMON_CONF=' line='DAEMON_CONF="/etc/hostapd/hostapd.conf"'
   notify: restart_hostapd
 
+- name: Unmask hostapd
+  systemd: name=hostapd enabled=yes masked=no  # hostapd is masked after a fresh (Buster Lite) install
+
 # Reboot due to possible changes now
 - meta: flush_handlers
