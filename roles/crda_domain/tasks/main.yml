@@ -12,3 +12,13 @@
 - name: Set regulatory domain
   lineinfile: dest=/etc/default/crda regexp="REGDOMAIN=.*" line="REGDOMAIN={{ crda_domain_code }}"
   notify: reboot
+
+# Buster Lite (at least) seems to require contry code specified also in wpa_supplicant 
+# to persist unblocked wifi (rfkill) over reboots
+- name: Set wpa supplicant
+  lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf regexp="country=.*" line="country={{ crda_domain_code }}"
+  notify: reboot
+
+# Unblock wifi now
+- name: unblock wifi
+  command: 'rfkill unblock wifi'
