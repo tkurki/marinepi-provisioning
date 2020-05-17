@@ -1,0 +1,12 @@
+#!/bin/bash
+if [[ "$(docker images -q marinepi/ansible 2> /dev/null)" == "" ]]; then
+  docker build -t marinepi/ansible .
+fi
+
+docker run --rm -it \
+  -v $(pwd):/ansible \
+  -v $HOME/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub \
+  -v $HOME/.ssh/id_rsa:/root/.ssh/id_rsa \
+  -v $ANSIBLE_VAULT_PASSWORD_FILE:/root/ansible_vault_password_file \
+  -e ANSIBLE_VAULT_PASSWORD_FILE=/root/ansible_vault_password_file \
+marinepi/ansible
