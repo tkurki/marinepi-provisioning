@@ -53,12 +53,6 @@
     - route53-ddns
 
   tasks:
-    - lineinfile: dest=/etc/udev/rules.d/99-cassiopeia-usb-devices.rules create=yes line="SUBSYSTEM==\"tty\", ACTION==\"add\", ATTRS{serial}==\"FTUL7DTY\", SYMLINK+=\"nmea-digyacht\""
-    - lineinfile: dest=/etc/udev/rules.d/99-cassiopeia-usb-devices.rules line="SUBSYSTEM==\"tty\", ACTION==\"add\", ATTRS{serial}==\"FTUL7DTY\", GROUP=\"pi\""
-    - lineinfile: dest=/etc/udev/rules.d/99-cassiopeia-usb-devices.rules line="SUBSYSTEM==\"tty\", ACTION==\"add\", ATTRS{serial}==\"A901IPKN\", SYMLINK+=\"nmea-dxt\""
-    - lineinfile: dest=/etc/udev/rules.d/99-cassiopeia-usb-devices.rules line="SUBSYSTEM==\"tty\", ACTION==\"add\", ATTRS{serial}==\"A901IPKN\", GROUP=\"pi\""
-    - lineinfile: dest=/etc/udev/rules.d/99-cassiopeia-usb-devices.rules line="SUBSYSTEM==\"tty\", ACTION==\"add\", ATTRS{serial}==\"1FD34\", SYMLINK+=\"actisense\""
-    - lineinfile: dest=/etc/udev/rules.d/99-cassiopeia-usb-devices.rules line="SUBSYSTEM==\"tty\", ACTION==\"add\", ATTRS{serial}==\"1FD34\", GROUP=\"pi\""
     - name: Pull own settings from the repository
       git: repo=https://github.com/tkurki/cassiopeia-settings dest=/home/pi/cassiopeia-settings force=yes version=master
     - name: Install own providers
