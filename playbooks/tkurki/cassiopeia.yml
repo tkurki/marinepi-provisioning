@@ -53,10 +53,6 @@
   tasks:
     - name: Pull own settings from the repository
       git: repo=https://github.com/tkurki/cassiopeia-settings dest=/home/pi/.signalk force=yes version=master
-    - name: Install own providers
-      command: npm install tkurki/cassiopeia-providers
-      args:
-        chdir: /opt/signalk-server
     - name: Restart signalk-server
       service: name=signalk-server state=restarted
       become: true
