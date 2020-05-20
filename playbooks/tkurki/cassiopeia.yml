@@ -50,7 +50,6 @@
       node_app_env:
         - "NODE_ENV=production"
         - "SIGNALK_NODE_SETTINGS=/home/pi/cassiopeia-settings/signalk-server-settings.json"
-    - route53-ddns
 
   tasks:
     - name: Pull own settings from the repository
