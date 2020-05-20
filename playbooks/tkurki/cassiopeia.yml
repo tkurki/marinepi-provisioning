@@ -37,7 +37,6 @@
       upnpc_port_forwards: "500 UDP 4500 UDP 1701 UDP"
       upnpc_port_redirects:
         - "192.168.8.100 22 2222 tcp"
-    - l2tp_vpn_server
     - hotspot
     - role: nat_router
       nat_router_fw_input_rules:
@@ -53,7 +52,7 @@
 
   tasks:
     - name: Pull own settings from the repository
-      git: repo=https://github.com/tkurki/cassiopeia-settings dest=/home/pi/cassiopeia-settings force=yes version=master
+      git: repo=https://github.com/tkurki/cassiopeia-settings dest=/home/pi/.signalk force=yes version=master
     - name: Install own providers
       command: npm install tkurki/cassiopeia-providers
       args:
