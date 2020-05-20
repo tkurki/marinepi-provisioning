@@ -45,10 +45,14 @@
         - "-A FORWARD -i eth1 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT"
         - "-A FORWARD -i eth0 -o eth1 -j ACCEPT"
       nat_router_inet_interface: eth1
-
-  tasks:
-    - name: Pull own settings from the repository
-      git: repo=https://github.com/tkurki/cassiopeia-settings dest=/home/pi/.signalk force=yes version=master
+    - role: s3-upload
+      s3_upload_name: "signalk-raw-logs"
+      s3_upload_src_dir: "/home/pi/.signalk"
+      s3_upload_dst: "s3://cassiopeia2020/"
+      s3_upload_include_pattern: "skserver-raw*.log"
+      s3_upload_period: "120min"
+    - signalk-docker
+    - zerotier
 
   handlers:
     - include: ../../handlers/handlers.yml
