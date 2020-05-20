@@ -21,4 +21,8 @@ if grep -q $HOST ~/.ssh/known_hosts; then
 fi
 
 export ANSIBLE_ROLES_PATH=$(dirname $0)/roles
-ansible-playbook -i $HOST, $PLAYBOOK
+
+#docker pull may take a long time and ssh control connection times out
+export ANSIBLE_SSH_ARGS='-C -o ControlMaster=auto -o ControlPersist=30m -o ServerAliveInterval=50'
+
+ansible-playbook -v -i $HOST, $PLAYBOOK
