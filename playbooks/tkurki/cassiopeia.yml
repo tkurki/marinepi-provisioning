@@ -45,17 +45,10 @@
         - "-A FORWARD -i eth1 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT"
         - "-A FORWARD -i eth0 -o eth1 -j ACCEPT"
       nat_router_inet_interface: eth1
-    - role: signalk
-      node_app_env:
-        - "NODE_ENV=production"
-        - "SIGNALK_NODE_SETTINGS=/home/pi/cassiopeia-settings/signalk-server-settings.json"
 
   tasks:
     - name: Pull own settings from the repository
       git: repo=https://github.com/tkurki/cassiopeia-settings dest=/home/pi/.signalk force=yes version=master
-    - name: Restart signalk-server
-      service: name=signalk-server state=restarted
-      become: true
 
   handlers:
     - include: ../../handlers/handlers.yml
