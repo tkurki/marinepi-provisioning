@@ -2,8 +2,8 @@
 - name: Setup MCP2515 can device
   lineinfile:
     dest=/boot/config.txt
-    regexp='^dtoverlay=mcp2515-{{ mcp2515_can_device }}'
-    line="dtoverlay=mcp2515-{{ mcp2515_can_device }},oscillator={{ mcp2515_oscillator_freq }},interrupt={{ mcp2515_int_pin }}"
+    regexp='^dtoverlay=mcp2515-{{ mcp2515_overlay_can_device }}'
+    line="dtoverlay=mcp2515-{{ mcp2515_overlay_can_device }},oscillator={{ mcp2515_oscillator_freq }},interrupt={{ mcp2515_int_pin }}"
   notify: reboot
 
 - name: Setup a CAN device
