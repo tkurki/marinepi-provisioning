@@ -1,0 +1,32 @@
+---
+- name: Install python setuptools
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - python3-setuptools
+      - python3-dev
+
+- name: Download sailor-hat-daemon
+  git: repo=https://github.com/mairas/sailor-hat-daemon.git dest={{sailor_hat_directory}} clone=yes force=yes
+  become: no
+  register: sailor_hat_sources
+
+- name: Install sailor-hat-daemon
+  command: python3 setup.py install
+  args:
+    chdir: "{{sailor_hat_directory}}"
+  when: sailor_hat_sources.changed
+
+- name: Setup the sailor-hat systemd service
+  template: src=sailor_hat_systemd_script.j2 dest=/lib/systemd/system/sailor_hat.service owner=root group=root mode=0644
+  register: unit_file
+
+- name: "sailor_hat | Reload systemd"
+  command: systemctl daemon-reload
+  when: unit_file.changed
+
+- name: "sailor_hat | Restart application"
+  service: name=sailor_hat state=restarted enabled=yes
+  when: sailor_hat_sources.changed or unit_file.changed
