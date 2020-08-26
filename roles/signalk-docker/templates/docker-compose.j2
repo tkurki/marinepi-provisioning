@@ -16,6 +16,7 @@ services:
       - "9997:9997"
       - "9998:9998"
       - "9999:9999"
+    network_mode: host
     volumes:
       - "/home/pi/.signalk:/home/node/.signalk"
       - "/home/pi/signalk-docker-data/logs:/signalk-log"
@@ -29,6 +30,8 @@ services:
       INFLUXDB_DATA_CACHE_SNAPSHOT_MEMORY_SIZE: 2621440
     volumes:
       - "/home/pi/signalk-docker-data/influxdb:/var/lib/influxdb"
+    ports:
+      - "8086:8086"
     restart: always
     user: "1000"
   grafana:
