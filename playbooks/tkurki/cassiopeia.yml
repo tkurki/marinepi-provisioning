@@ -40,11 +40,8 @@
     - hotspot
     - role: nat_router
       nat_router_fw_input_rules:
-        - "-A FORWARD -i eth1 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT"
-        - "-A FORWARD -i wlan0 -o eth1 -j ACCEPT"
-        - "-A FORWARD -i eth1 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT"
-        - "-A FORWARD -i eth0 -o eth1 -j ACCEPT"
-      nat_router_inet_interface: eth1
+        - "-A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT"
+        - "-A FORWARD -i wlan0 -o eth0 -j ACCEPT"
     - role: s3-upload
       s3_upload_name: "signalk-raw-logs"
       s3_upload_src_dir: "/home/pi/.signalk"
