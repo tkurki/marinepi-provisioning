@@ -17,7 +17,7 @@ services:
       - "9998:9998"
       - "9999:9999"
     volumes:
-      - "/home/pi/.signalk:/home/signalk/.signalk"
+      - "/home/pi/.signalk:/home/node/.signalk"
       - "/home/pi/signalk-docker-data/logs:/signalk-log"
       - "/dev/serial:/dev/serial"
     restart: always
@@ -30,7 +30,7 @@ services:
     volumes:
       - "/home/pi/signalk-docker-data/influxdb:/var/lib/influxdb"
     restart: always
-    user: "999"
+    user: "1000"
   grafana:
     image: "grafana/grafana"
     environment:
@@ -40,5 +40,5 @@ services:
     volumes:
       - "/home/pi/signalk-docker-data/grafana:/var/lib/grafana"
       - "/home/pi/signalk-docker-data/grafana/provisioning:/etc/grafana/provisioning/"
-    user: "999"
     restart: always
+    user: "1000"
