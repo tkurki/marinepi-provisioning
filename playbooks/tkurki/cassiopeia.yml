@@ -42,12 +42,7 @@
       nat_router_fw_input_rules:
         - "-A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT"
         - "-A FORWARD -i wlan0 -o eth0 -j ACCEPT"
-    - role: s3-upload
-      s3_upload_name: "signalk-raw-logs"
-      s3_upload_src_dir: "/home/pi/.signalk"
-      s3_upload_dst: "s3://cassiopeia2020/"
-      s3_upload_include_pattern: "skserver-raw*.log"
-      s3_upload_period: "120min"
+    - aws-cli
     - signalk-docker
     - zerotier
 
