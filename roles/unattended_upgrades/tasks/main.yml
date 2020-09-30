@@ -64,6 +64,16 @@
     when: unattended_upgrades_email is not none
     tags: unattended_upgrades
 
+  - name: Set From address for unattended upgrades email notifications
+    lineinfile:
+      dest: /etc/apt/apt.conf.d/50unattended-upgrades
+      state: present
+      regexp: '^Unattended-Upgrade::Sender '
+      insertafter: '^Unattended-Upgrade::Mail '
+      line: 'Unattended-Upgrade::Sender "{{ unattended_upgrades_from_email }}";'
+    when: unattended_upgrades_email is not none and unattended_upgrades_from_email is not none
+    tags: unattended_upgrades
+
   - name: Enable automatic upgrades for distro-updates repository
     lineinfile:
       dest: /etc/apt/apt.conf.d/50unattended-upgrades
