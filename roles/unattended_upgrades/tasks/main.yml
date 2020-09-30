@@ -80,7 +80,7 @@
       state: present
       regexp: 'origin=Debian,codename=\${distro_codename}-updates'
       line: '        "origin=Debian,codename=${distro_codename}-updates";'
-    when: unattended_upgrades_email is not none
+    when: unattended_upgrades_distro_updates
     tags: unattended_upgrades
 
   - name: Set custom upgrade origin patterns

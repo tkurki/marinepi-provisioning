@@ -1,6 +1,7 @@
 ---
 unattended_upgrades_allow_reboot: true
 unattended_upgrades_reboot_immediately: true
+unattended_upgrades_distro_updates: true
 unattended_upgrades_email:
 unattended_upgrades_from_email:
 unattended_upgrades_origins:
