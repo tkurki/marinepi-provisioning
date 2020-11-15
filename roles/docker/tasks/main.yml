@@ -53,3 +53,42 @@
     name: docker-compose
     state: present
     executable: pip3
+
+- name: Configure Docker to use custom registry
+  block:
+    - name: Check if Docker config file exists
+      stat:
+        path: /etc/docker/daemon.json
+      register: docker_config_file
+    - name: Create Docker config file
+      copy:
+        dest: /etc/docker/daemon.json
+        content: |
+          {
+            "registry-mirrors": ["{{ docker_custom_registry }}"]
+          }
+      become: true
+      notify: Restart Docker
+      when: not docker_config_file.stat.exists
+    - name: Check if custom registry is already configured
+      lineinfile:
+        path: /etc/docker/daemon.json
+        regexp: "{{ docker_custom_registry }}"
+        state: absent
+      check_mode: yes
+      changed_when: false
+      register: docker_custom_registry_line
+    - name: Install jq
+      apt:
+        name: jq
+        state: latest
+      become: true
+      when: docker_config_file.stat.exists and not docker_custom_registry_line.found
+    - name: Add custom registry to Docker config file
+      shell: |
+        cat /etc/docker/daemon.json | jq '. + {"registry-mirrors": ["{{docker_custom_registry}}"]}' > /etc/docker/daemon2.json
+        mv /etc/docker/daemon2.json /etc/docker/daemon.json
+      become: true
+      notify: Restart Docker
+      when: docker_config_file.stat.exists and not docker_custom_registry_line.found
+  when: docker_custom_registry != ""

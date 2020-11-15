@@ -2,3 +2,7 @@
 - name: "Reload systemd"
   systemd:
     daemon_reload: yes
+- name: "Restart Docker"
+  systemd:
+    name: "docker.service"
+    state: restarted
