@@ -19,14 +19,31 @@ Usage
 1. Install Raspberry OS Lite on an SD-card with your local computer.
     - Download the [Raspberry Pi Imager] (https://www.raspberrypi.org/software/) and install the OS (the tool will download the latest image)
     - Alternatively you can download the image yourself and write this to the SD-card with a tool like Belana Etcher or directly from the command line with the following commands:
-        - `diskutil list`
-        - `diskutil unmountDisk /dev/<disk#>`
-        - `sudo dd bs=1m if=<your image file>.img of=/dev/<disk#>`
-1. [Enable SSH] (https://www.raspberrypi.org/documentation/remote-access/ssh/) while the SD-Card is still in the local computer.
-    - Windows: create an empty file "ssh" on the SD-card (which now has the volume label 'boot)
+        ```
+        diskutil list
+        diskutil unmountDisk /dev/<disk#>
+        sudo dd bs=1m if=<your image file>.img of=/dev/<disk#>
+        ```
+1. [Enable SSH](https://www.raspberrypi.org/documentation/remote-access/ssh/) while the SD-Card is still in the local computer.
+    - Windows: create an empty file `ssh` on the SD-card (which now has the volume label 'boot)
     - Linux/MacOS: `touch /Volumes/boot/ssh`
-1. Insert the memory card in the to-be-provisioned Raspberry Pi and connect the it to the local network.
-1. Clone this git repository on your local computer (if you haven't already done so)
+1. (Optionally) Configure Raspberry Pi to [connect to your Wifi network](https://www.raspberrypi.org/documentation/configuration/wireless/headless.md) (otherwise you have to connect through Ethernet)
+    - Create a file `wpa_supplicants.conf` on the SD-card with the following content:
+        ```
+        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+        update_config=1
+        country=<Insert 2 letter ISO 3166-1 country code here>
+
+        network={
+        ssid="<Name of your wireless LAN>"
+        psk="<Password for your wireless LAN>"
+        }
+       ```
+1. Test Raspberry OS and connection.
+    - Insert the memory card in the to-be-provisioned Raspberry Pi and connect the it to the local network.
+    - ssh into your Pi with [standard credentials](https://www.raspberrypi.org/documentation/linux/usage/users.md) (username=pi, password=raspberry):
+            `ssh <ip> -lpi`
+1. Clone this git repository on your local computer
     - 'git clone https://github.com/tkurki/marinepi-provisioning.git '
     - 'cd marinepi-provisioning'
 1. Run either `./firstrun.sh` (uses hostname `raspberrypi.local`) or `./firstrun.sh <ip-of-your-raspi>` ([find out the IP address](https://www.raspberrypi.org/documentation/remote-access/ip-address.md)) to copy over your [ssh key](https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md) & do the initial setup (change password for user `pi`, copy the ssh key, expand the filesystem)
