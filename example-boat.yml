@@ -67,7 +67,7 @@
       nat_router_inet_interface: wlan1
 
     - canboat
-    - signalk
+    - signalk-npm
     - pysk
     #- role: mcp2515-can
     #  mcp2515_can_device: can0

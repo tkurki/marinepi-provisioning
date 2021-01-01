@@ -46,6 +46,7 @@
         - "-A FORWARD -i eth1 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT"
         - "-A FORWARD -i eth0 -o eth1 -j ACCEPT"
       nat_router_inet_interface: eth1
+    # Update: it is recommended to NOT use signalk anymore, use signalk-npm or signalk-docker instead.
     - role: signalk
       node_app_env:
         - "NODE_ENV=production"
