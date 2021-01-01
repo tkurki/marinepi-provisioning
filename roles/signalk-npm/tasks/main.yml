@@ -6,6 +6,7 @@
 # - role: signalk-npm
 #      signalk_defaults_file: my-custom-signalk-defaults.json
 #      signalk_settings_file: my-custom-signalk-settings.json
+#      signalk_security_file: my-custom-signalk-security.json
 #      signalk_plugins:
 #       - plugin_name: "@signalk/aisreporter"
 #         plugin_config_src: my-custom-aisreporter-conf.json
@@ -82,7 +83,17 @@
     when: signalk_settings_file is defined
     notify: restart-signalk-server
     tags: signalk-npm
-
+  
+  - name: "Copy Custom SignalK server security settings"
+    copy:
+      src: "{{ signalk_security_file }}"
+      dest: "/home/{{ signalk_user }}/.signalk/security.json"
+      mode: 0644
+    become_user: "{{ signalk_user }}"
+    when: signalk_security_file is defined
+    notify: restart-signalk-server
+    tags: signalk-npm
+    
   - name: "Install SignalK server plugins"
     include:
       file: install_plugin.yml
