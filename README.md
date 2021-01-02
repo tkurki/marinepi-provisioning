@@ -42,7 +42,7 @@ Usage
 1. Test Raspberry OS and connection.
     - Insert the memory card in the to-be-provisioned Raspberry Pi and connect the it to the local network.
     - ssh into your Pi with [standard credentials](https://www.raspberrypi.org/documentation/linux/usage/users.md) (username=pi, password=raspberry):
-            `ssh <ip> -lpi`
+            `ssh <ip> -l pi`
 1. Clone this git repository on your local computer
     - 'git clone https://github.com/tkurki/marinepi-provisioning.git '
     - 'cd marinepi-provisioning'
