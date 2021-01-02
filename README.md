@@ -48,9 +48,9 @@ Usage
     - 'cd marinepi-provisioning'
 1. Run either `./firstrun.sh` (uses hostname `raspberrypi.local`) or `./firstrun.sh <ip-of-your-raspi>` ([find out the IP address](https://www.raspberrypi.org/documentation/remote-access/ip-address.md)) to copy over your [ssh key](https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md) & do the initial setup (change password for user `pi`, copy the ssh key, expand the filesystem)
     - note: MacOS users might see an error because 'sshpass' is not installed by default. See [answer in this thread](https://stackoverflow.com/questions/32255660/how-to-install-sshpass-on-mac) on how to install sshpass (first install XCode and than the XCode command line utilities)
-1. When it asks you for SSH password type in `raspberry` (default password for `pi` user) and hit return.
-1. When asked for a new password what you enter will be the new password for the `pi` user on the device.
-    - note: characters like '@' seem to crash the process, try others characters if the process fails.
+    - When it asks you for SSH password type in `raspberry` (default password for `pi` user) and hit return.
+    - When asked for a new password what you enter will be the new password for the `pi` user on the device.
+        - note: characters like '@' seem to crash the process, try others characters if the process fails.
 1. Edit configuration in `example-boat.yml` to match your environment and fill in your hotspot details
 1. Run `./provision.sh <ip-of-your-raspi> example-boat.yml` to provision the software & configurations for the roles in example-boat.yml.
     - note: When you see an error like below, this is because the Pi is being rebooted. When the Pi comes back online, restart the provisioning process and it will continue.
