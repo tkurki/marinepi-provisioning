@@ -46,10 +46,11 @@
         - "-A FORWARD -i eth1 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT"
         - "-A FORWARD -i eth0 -o eth1 -j ACCEPT"
       nat_router_inet_interface: eth1
-    - role: signalk
-      node_app_env:
-        - "NODE_ENV=production"
-        - "SIGNALK_NODE_SETTINGS=/home/pi/cassiopeia-settings/signalk-server-settings.json"
+    # deprecated, use signalk-npm instead
+    # - role: signalk
+    #   node_app_env:
+    #     - "NODE_ENV=production"
+    #     - "SIGNALK_NODE_SETTINGS=/home/pi/cassiopeia-settings/signalk-server-settings.json"
     - route53-ddns
 
   tasks:
