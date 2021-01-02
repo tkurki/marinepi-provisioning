@@ -18,7 +18,7 @@ Usage
     - note: on MacOS Ansible might not be added to your PATH in bash_profile, see [2nd answer in this thread](https://stackoverflow.com/questions/35898734/pip-installs-packages-successfully-but-executables-not-found-from-command-line/35899029) on how to fixed that.
 1. Install Raspberry OS Lite on an SD-card with your local computer.
     - Download the [Raspberry Pi Imager] (https://www.raspberrypi.org/software/) and install the OS (the tool will download the latest image)
-    - Alternatively you can download the image yourself and write this to the SD-card with a tool like Belana Etcher or directly from the command line with the following commands:
+    - Alternatively you can download the image yourself and write this to the SD-card with a tool like [Belena Etcher](https://www.balena.io/etcher/) or directly from the command line with the following commands:
         ```
         diskutil list
         diskutil unmountDisk /dev/<disk#>
