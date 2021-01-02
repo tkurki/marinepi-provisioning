@@ -1,3 +1,0 @@
----
-- name: restart-signalk-server
-  service: name=signalk-server.service state=restarted
