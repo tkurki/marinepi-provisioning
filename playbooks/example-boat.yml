@@ -78,4 +78,4 @@
 
 
   handlers:
-    - include: handlers/handlers.yml
+    - include: ../handlers/handlers.yml
