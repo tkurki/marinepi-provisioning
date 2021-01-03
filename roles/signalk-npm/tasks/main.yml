@@ -34,7 +34,10 @@
     poll: 10
     notify: restart-signalk-server
     tags: signalk-npm
-
+  - name: Check if signalk-server file is installed in /usr/bin/ (otherwise it is in /usr/local/bin)
+    stat:
+      path: /usr/bin/signalk-server
+    register: file_in_usr_bin
   - name: "Setup SignalK server systemd service"
     template:
       src: signalk.service.j2
@@ -42,6 +45,8 @@
       owner: root
       group: root
       mode: 0644
+    vars:
+      path_to_signalk_server: "{{ '/usr/bin/signalk-server' if (file_in_usr_bin.stat.exists == True) else '/usr/local/bin/signalk-server' }}"
     notify: restart-signalk-server
     tags: signalk-npm
 
