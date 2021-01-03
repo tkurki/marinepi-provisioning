@@ -1,6 +1,8 @@
 ---
-# For ARMv6 models (A, A+, B, B+, Zero, Zero W). This should match a directory name on the download site: https://nodejs.org/dist/ (e.g. latest-v4.x, v5.8.0, latest)
-nodejs_armv6_version: latest-v12.x   # Latest 12.x series LTS release
+# Node v12 dropped support for ARMv6 models (A, A+, B, B+, Zero, Zero W), use an unofficial build on these architectures.
+# This should match a directory name on the download site: https://unofficial-builds.nodejs.org/download/release/
+nodejs_armv6_version: v12.20.0   # There is no 'latest' directory, this should be updated manually.
+
 # The path to the binary of ARMv6 node installation
 nodejs_armv6_binary: /usr/local/bin/node
 

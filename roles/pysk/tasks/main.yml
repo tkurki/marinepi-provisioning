@@ -22,9 +22,10 @@
     - build-essential
     - python-all-dev
     - python-setuptools
+    - python-pip
 
 - name: 'Install pysk'
-  easy_install:
+  pip:
     name: pysk
     state: latest
   become: true

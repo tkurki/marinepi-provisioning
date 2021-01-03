@@ -27,7 +27,7 @@
   failed_when: False
 
 - name: Get latest available Node.js tarball filename
-  shell: curl https://nodejs.org/dist/{{ nodejs_armv6_version }}/ | grep armv6l.tar.gz | sed 's/.*>\(.*\)<\/a>.*/\1/g' || /bin/true
+  shell: curl https://unofficial-builds.nodejs.org/download/release/{{ nodejs_armv6_version }}/ | grep armv6l.tar.gz | sed 's/.*>\(.*\)<\/a>.*/\1/g' || /bin/true
   args:
     warn: False
   register: latest_node_filename
@@ -41,7 +41,7 @@
 - name: Install Node.js
   block:
   - name: Generate download URL
-    set_fact: node_download_url=https://nodejs.org/dist/{{ nodejs_armv6_version }}/node-{{ latest_node_version }}-linux-armv6l.tar.gz
+    set_fact: node_download_url=https://unofficial-builds.nodejs.org/download/release/{{ nodejs_armv6_version }}/node-{{ latest_node_version }}-linux-armv6l.tar.gz
 
   - name: Download Node.js binary distribution
     get_url: url={{ node_download_url }} dest=/tmp/nodejs.tar.gz mode=0440
