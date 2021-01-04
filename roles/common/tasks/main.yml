@@ -29,7 +29,7 @@
   apt: update_cache=yes cache_valid_time=7200
   failed_when: False
 
-- name: Update the Raspbian distribution
+- name: Update the Raspberry Pi OS distribution
   apt: upgrade=yes
   when: apt_upgrade == true
   notify: reboot
