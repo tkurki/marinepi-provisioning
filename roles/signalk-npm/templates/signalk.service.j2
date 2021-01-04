@@ -8,7 +8,7 @@ Restart=always
 RestartSec=15s
 User={{ signalk_user }}
 Group={{ signalk_user_group }}
-ExecStart=/usr/bin/signalk-server
+ExecStart={{ path_to_signalk_server }}
 
 [Install]
 WantedBy=multi-user.target
