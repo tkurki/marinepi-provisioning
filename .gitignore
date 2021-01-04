@@ -1,2 +1,3 @@
 .idea/
-playbooks/chacal/
+playbooks/*
+!playbooks/example-boat.yml

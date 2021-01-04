@@ -1,0 +1,81 @@
+# Copyright 2015-2016 Harri Kapanen <harri.kapanen@iki.fi>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- hosts: all
+  remote_user: pi
+  gather_facts: yes
+  become: yes
+
+# Configure vars and roles below to match your setup and environment
+# You can define 1...n wificlients by adding/removing lines
+
+  vars:
+    - hostname: marinepi
+
+    # timezone - server timezone  (optional)
+    #
+    #  defaults to Etc/UTC. Uncomment to override. for valid values, see:
+    #    https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+    #
+    #- timezone: Europe/Helsinki
+
+    # SignalK node server git branch (optional)
+    #
+    #  Defaults to 'latest', referring to the latest released version.
+    #  Other interesting options would be 'master', referring to the
+    #  latest development version, or (say) 'v1.9.1', referring to a
+    #  specific released version.
+    #- signalk_server_git_branch: latest
+
+    # signalk_settings_file - config file for server (optional)
+    #
+    #  defaults to the testing config file. Uncomment to override. for
+    #  examples see:
+    #    https://github.com/SignalK/signalk-server-node/tree/master/settings
+    #
+    #- signalk_settings_file: ./settings.json
+
+    - wificlient_networks:
+       - ssid: <your marina ssid 1 here>
+         psk: <your marina 1 wifi passphrase here>
+       - ssid: <your marina ssid 2 here>
+         psk: <your marina 2 wifi passphrase here>
+    - nat_router_inet_interface: wlan1
+    - nat_router_local_interface: wlan0
+    - hotspot_ssid: <your hotspot ssid here>
+    - hotspot_passphrase: <your hotspot passphrase here>
+
+  roles:
+    - common
+    - crda_domain
+    - wificlient
+    - hotspot
+    - role: nat_router
+      nat_router_local_interface: wlan0
+      nat_router_inet_interface: wlan1
+
+    - canboat
+    - signalk-npm
+    - pysk
+    #- role: mcp2515-can
+    #  mcp2515_can_device: can0
+    #  mcp2515_oscillator_freq: 8000000
+    #  mcp2515_int_pin: 12
+    #  mcp2515_bitrate: 250000
+    #  mcp2515_tx_queuelen: 100
+
+
+  handlers:
+    - include: ../handlers/handlers.yml
