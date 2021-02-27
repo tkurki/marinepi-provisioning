@@ -9,7 +9,7 @@ Restart=always
 TimeoutStartSec={{ docker_app_start_timeout }}
 SyslogIdentifier={{ docker_app_syslog_identifier }}
 RestartSec={{ docker_app_restart_delay }}
-ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect {{ docker_app_name }} 2> /dev/null || \
+ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect {{ docker_app_name }} 2>/dev/null 1>&2 || \
                            /usr/bin/docker run \
                                -d \
                                -t \
