@@ -12,6 +12,7 @@ RestartSec={{ docker_app_restart_delay }}
 ExecStartPre=/bin/bash -c "/usr/bin/docker container inspect {{ docker_app_name }} 2> /dev/null || \
                            /usr/bin/docker run \
                                -d \
+                               -t \
                                --name {{ docker_app_name }} \
                                {% for env in docker_app_env %}
                                -e {{ env }} \
