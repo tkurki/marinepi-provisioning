@@ -33,25 +33,6 @@
     content: "{{ mqtt_server_config }}"
   notify: Restart Mosquitto
 
-- name: Create Mosquitto unit file
-  copy:
-    dest: /etc/systemd/system/mosquitto.service
-    content: |
-      [Unit]
-      Description=Mosquitto MQTT broker
-
-      [Service]
-      User=root
-      Group=root
-      Type=simple
-      ExecStart=/usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
-      Restart=always
-      RestartSec=5
-
-      [Install]
-      WantedBy=multi-user.target
-  notify: Restart Mosquitto
-
 - name: Remove mosquitto password file
   file: path={{ mqtt_server_password_file }} state=absent
   changed_when: False
