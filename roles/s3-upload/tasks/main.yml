@@ -39,3 +39,9 @@
   notify:
     - "Reload systemd"
     - "Start timer"
+
+- name: "Ensure timer is started"
+  systemd:
+    name: "{{ s3_upload_name }}.timer"
+    enabled: yes
+    state: started
