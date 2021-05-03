@@ -2,7 +2,7 @@ FROM alpine:3.11
 
 ENV ANSIBLE_VERSION 2.9
 
-RUN apk --update add bash python py-pip openssl ca-certificates && \
+RUN apk --update add bash python openssh py-pip openssl ca-certificates && \
     apk --update add --virtual build-dependencies python-dev libffi-dev openssl-dev build-base && \
     pip install --upgrade pip cffi
 
