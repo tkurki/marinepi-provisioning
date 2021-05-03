@@ -13,7 +13,7 @@ ExecStart=/usr/local/bin/docker-compose up -d
 
 ExecStop=/usr/local/bin/docker-compose stop
 
-ExecReload=/usr/local/bin/docker-compose pull --quiet --parallel
+ExecReload=/usr/local/bin/docker-compose pull --quiet
 ExecReload=/usr/local/bin/docker-compose up -d
 
 [Install]
