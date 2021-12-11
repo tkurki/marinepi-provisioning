@@ -19,7 +19,7 @@
 - name: Install pip
   apt:
     name:
-      - pip2  # glances dependency
+      - python-pip  # glances dependency
   become: true
 
 - name: Install glances
