@@ -12,12 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ---
-- name: 'Install Python PIP'
+- name: 'Install Python3 PIP'
+  apt:
+    state: latest
+    pkg:
+      - python3-pip
+
+- name: 'Install Python2 PIP'
   apt:
     state: latest
     pkg:
       - python-pip
-      - python3-pip
+  when: ansible_distribution_major_version | int < 11
 
 - name: 'Install AWS CLI'
   pip: >

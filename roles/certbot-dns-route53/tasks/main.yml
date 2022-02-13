@@ -6,8 +6,16 @@
     pkg:
       - certbot
       - python3-certbot-dns-route53
-      - python-pexpect
       - python3-pexpect
+  tags: certbot
+
+- name: Install Python2 pexpect
+  apt:
+    state: latest
+    cache_valid_time: 3600
+    pkg:
+      - python-pexpect
+  when: ansible_distribution_major_version | int < 11
   tags: certbot
 
 - name: Create certbot deploy-hook directory

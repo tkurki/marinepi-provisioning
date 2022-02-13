@@ -44,7 +44,7 @@
   apt:
     name:
       - python3-pip
-      - libffi6
+      - "{{ 'libffi6' if ansible_distribution_major_version | int < 11 else 'libffi7' }}"
       - libffi-dev
     state: latest
 
