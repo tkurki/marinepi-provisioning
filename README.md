@@ -27,7 +27,7 @@ Usage
 1. [Enable remote access](https://www.raspberrypi.org/documentation/remote-access/ssh/) while the SD-Card is still in the computer.
     - ssh
         - Windows: create an empty file `ssh` on the SD-card (which now has the volume label 'boot)
-        - Linux/MacOS: create the empty file with this command: `touch /Volumes/boot/ssh`
+        - Linux/MacOS: create the empty file with this command: `touch /Volumes/bootfs/ssh`
     - [create default user](https://reelyactive.github.io/diy/pi-prep/) (since [Bullseye](https://www.raspberrypi.com/news/raspberry-pi-bullseye-update-april-2022/))
     - Optionally, configure the Raspberry Pi to [connect to your Wifi network](https://www.raspberrypi.org/documentation/configuration/wireless/headless.md) (otherwise you have to connect through Ethernet)
         - Create a file `wpa_supplicants.conf` on the SD-card with the following content:
