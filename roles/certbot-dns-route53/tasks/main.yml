@@ -36,7 +36,7 @@
 
 - name: Get certificate
   expect:
-    command: "certbot certonly --deploy-hook /etc/letsencrypt/renewal-hooks/deploy/{{ certbot_deploy_hook_name }} --dns-route53 -d {{ certbot_certificate_domains | join(' -d ') }} -m {{ certbot_email }} --agree-tos"
+    command: "certbot certonly {{ '--deploy-hook /etc/letsencrypt/renewal-hooks/deploy/' +  certbot_deploy_hook_name if certbot_deploy_hook != '' }} --dns-route53 -d {{ certbot_certificate_domains | join(' -d ') }} -m {{ certbot_email }} --agree-tos"
     responses:
       .*\(Y\)es\/\(N\)o: N
     timeout: 120
