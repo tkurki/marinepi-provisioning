@@ -1,0 +1,42 @@
+---
+- name: Install Wireguard
+  apt:
+    state: latest
+    pkg: wireguard
+  tags: wireguard
+
+- name: Configure Wireguard peers
+  blockinfile:
+    path: /etc/wireguard/wg0.conf
+    create: True
+    mode: 0600
+    insertbefore: 'BOF'
+    block: |
+      ### NOTE: This file is managed by Ansible. Don't edit! ###
+      [Interface]
+      PrivateKey = {{ wireguard_private_key }}
+      Address = {{ wireguard_address }}/32
+      ListenPort = {{ wireguard_port }}
+      {% for peer in wireguard_peers %}
+      
+      # {{ peer.name }}
+      [Peer]
+      PublicKey = {{ peer.public_key }}
+      AllowedIPs = {{ peer.allowed_ips }}
+      {% if peer.endpoint is defined %}
+      Endpoint = {{ peer.endpoint }}:{{ wireguard_port }}
+      {% endif %}
+      {% if peer.persistent_keepalive is defined %}
+      PersistentKeepalive = {{ peer.persistent_keepalive }}
+      {% endif %}
+      {% endfor %}
+  notify: Restart wireguard
+  tags: wireguard
+
+- name: Enable and start Wireguard
+  service:
+    name: wg-quick@wg0.service
+    enabled: yes
+    daemon_reload: yes
+    state: started
+  tags: wireguard
