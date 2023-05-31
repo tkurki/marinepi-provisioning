@@ -2,7 +2,7 @@ MarinePi
 ========
 
 [Ansible](https://en.wikipedia.org/wiki/Ansible_(software)) scripts to setup a Raspberry Pi for boat use, providing access to various data sources on board both via wired and wireless connections. Features include:
-- [Signal K](http://signalk.org/) [node server](https://github.com/SignalK/signalk-server-node) with NMEA0183 and NMEA 2000 support
+- [Signal K](http://signalk.org/) [node server](https://github.com/SignalK/signalk-server-node) with NMEA 0183 and NMEA 2000 support
 - wifi hotspot
 - (marina) wifi access with routing
 - 3/4G Internet connectivity with Huawei e3372
