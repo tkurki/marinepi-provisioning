@@ -17,7 +17,7 @@ Usage
     - ansible --version
     - note: on MacOS Ansible might not be added to your PATH in bash_profile, see [2nd answer in this thread](https://stackoverflow.com/questions/35898734/pip-installs-packages-successfully-but-executables-not-found-from-command-line/35899029) on how to fixed that.
 1. Install Raspberry OS Lite on an SD-card with your local computer.
-    - Download the [Raspberry Pi Imager] (https://www.raspberrypi.org/software/) and install the OS (the tool will download the latest image). It is also possible to [configure and enable remote access](https://pimylifeup.com/raspberry-pi-enable-ssh-without-monitor/#enabling-ssh-through-the-raspberry-pi-imager) already at this stage in Imager and skip the step (3) below.
+    - Download the [Raspberry Pi Imager](https://www.raspberrypi.org/software/) and install the OS (the tool will download the latest image). It is also possible to [configure and enable remote access](https://pimylifeup.com/raspberry-pi-enable-ssh-without-monitor/#enabling-ssh-through-the-raspberry-pi-imager) already at this stage in Imager and skip the step (3) below.
     - Alternatively you can download the image yourself and write this to the SD-card with a tool like [Belena Etcher](https://www.balena.io/etcher/) or directly from the command line with the following commands:
         ```
         diskutil list
