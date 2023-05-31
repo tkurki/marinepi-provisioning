@@ -13,7 +13,7 @@ MarinePi
 Usage
 =====
 
-1. [Install Ansible](http://docs.ansible.com/ansible/intro_installation.html) on your computer and verify that it works
+1. [Install Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) on your computer and verify that it works
     - ansible --version
     - note: on MacOS Ansible might not be added to your PATH in bash_profile, see [2nd answer in this thread](https://stackoverflow.com/questions/35898734/pip-installs-packages-successfully-but-executables-not-found-from-command-line/35899029) on how to fixed that.
 1. Install Raspberry OS Lite on an SD-card with your local computer.
