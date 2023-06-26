@@ -59,6 +59,7 @@
     - wavemon
     - telnet
     - speedtest-cli
+    - sysstat
   notify: reboot
 
 - name: Autoremove any unused packages
