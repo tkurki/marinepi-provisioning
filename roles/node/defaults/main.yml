@@ -1,13 +1,13 @@
 ---
 # Node v12 dropped support for ARMv6 models (A, A+, B, B+, Zero, Zero W), use an unofficial build on these architectures.
 # This should match a directory name on the download site: https://unofficial-builds.nodejs.org/download/release/
-nodejs_armv6_version: v12.20.0   # There is no 'latest' directory, this should be updated manually.
+nodejs_armv6_version: v16.20.1   # There is no 'latest' directory, this should be updated manually.
 
 # The path to the binary of ARMv6 node installation
 nodejs_armv6_binary: /usr/local/bin/node
 
 # For ARMv7 models (>= 2). This should match NodeSource's versioning (e.g. 4.x, 5.x or 4.4.0)
-nodejs_armv7_version: 12.x
+nodejs_armv7_version: 16.x
 
 # Set to true for giving node raw networking capabilities. Used to enable non-root node user for receiving BTLE messages
 nodejs_cap_net_raw_capabilities: false
